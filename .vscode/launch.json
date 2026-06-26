@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // ── Next.js Frontend ──────────────────────────────────────────────────
+    {
+      "name": "Debug: Next.js (web)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/web/node_modules/.bin/next",
+      "args": ["dev"],
+      "cwd": "${workspaceFolder}/apps/web",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_OPTIONS": "--inspect"
+      }
+    },
+
+    // ── NestJS Backend ────────────────────────────────────────────────────
+    {
+      "name": "Debug: NestJS API",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["run", "start:debug"],
+      "cwd": "${workspaceFolder}/services/api",
+      "console": "integratedTerminal",
+      "sourceMaps": true,
+      "outFiles": ["${workspaceFolder}/services/api/dist/**/*.js"]
+    },
+
+    // ── Hardhat Tests ─────────────────────────────────────────────────────
+    {
+      "name": "Debug: Hardhat Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/contracts/marketplace/node_modules/.bin/hardhat",
+      "args": ["test", "--network", "hardhat"],
+      "cwd": "${workspaceFolder}/contracts/marketplace",
+      "console": "integratedTerminal"
+    },
+
+    // ── Python FastAPI ─────────────────────────────────────────────────────
+    {
+      "name": "Debug: FastAPI AI Service",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["app.main:app", "--reload", "--port", "8000"],
+      "cwd": "${workspaceFolder}/services/ai",
+      "python": "${workspaceFolder}/services/ai/.venv/bin/python",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug: Full Stack",
+      "configurations": ["Debug: Next.js (web)", "Debug: NestJS API"],
+      "stopAll": true
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ── Development ────────────────────────────────────────────────────────
+    {
+      "label": "dev: start all",
+      "type": "shell",
+      "command": "pnpm dev",
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": [],
+      "runOptions": { "runOn": "default" }
+    },
+
+    // ── Build ──────────────────────────────────────────────────────────────
+    {
+      "label": "build: all",
+      "type": "shell",
+      "command": "pnpm build",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always" },
+      "problemMatcher": ["$tsc"]
+    },
+
+    // ── Linting & Formatting ───────────────────────────────────────────────
+    {
+      "label": "lint: check",
+      "type": "shell",
+      "command": "pnpm lint",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "lint: fix",
+      "type": "shell",
+      "command": "pnpm lint:fix",
+      "group": "test",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "format: write",
+      "type": "shell",
+      "command": "pnpm format",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+
+    // ── TypeCheck ─────────────────────────────────────────────────────────
+    {
+      "label": "typecheck: all",
+      "type": "shell",
+      "command": "pnpm typecheck",
+      "group": "test",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": ["$tsc"]
+    },
+
+    // ── Tests ──────────────────────────────────────────────────────────────
+    {
+      "label": "test: all",
+      "type": "shell",
+      "command": "pnpm test",
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+
+    // ── Clean ─────────────────────────────────────────────────────────────
+    {
+      "label": "clean: all",
+      "type": "shell",
+      "command": "pnpm clean",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+    {
+      "label": "clean: cache only",
+      "type": "shell",
+      "command": "pnpm clean:cache",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    }
+  ]
+}

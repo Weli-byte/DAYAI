@@ -1,0 +1,53 @@
+{
+  // Recommended VSCode extensions for this monorepo.
+  // Install all at once: Cmd/Ctrl+Shift+P → "Extensions: Show Recommended Extensions"
+  "recommendations": [
+    // ── TypeScript / JavaScript ─────────────────────────────────────────────
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+
+    // ── Monorepo tooling ────────────────────────────────────────────────────
+    "zxh404.vscode-proto3",
+
+    // ── Solidity ────────────────────────────────────────────────────────────
+    "NomicFoundation.hardhat-solidity",
+    "tintinweb.solidity-visual-auditor",
+
+    // ── Python / AI Service ─────────────────────────────────────────────────
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    "charliermarsh.ruff",
+
+    // ── Docker ──────────────────────────────────────────────────────────────
+    "ms-azuretools.vscode-docker",
+
+    // ── Git & Collaboration ─────────────────────────────────────────────────
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "github.vscode-pull-request-github",
+
+    // ── Editor enhancements ─────────────────────────────────────────────────
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "editorconfig.editorconfig",
+
+    // ── Markdown & Docs ─────────────────────────────────────────────────────
+    "yzhang.markdown-all-in-one",
+    "bierner.markdown-preview-github-styles",
+
+    // ── YAML / JSON / TOML ──────────────────────────────────────────────────
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+
+    // ── REST / API Testing ──────────────────────────────────────────────────
+    "humao.rest-client",
+
+    // ── TurboRepo ───────────────────────────────────────────────────────────
+    "vercel.turbo-vsc"
+  ],
+  "unwantedRecommendations": []
+}

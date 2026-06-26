@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# Husky pre-commit hook
+# Runs lint-staged to format and lint only the files staged for commit.
+# Configured via "lint-staged" key in root package.json.
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged

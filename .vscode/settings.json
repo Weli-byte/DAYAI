@@ -1,0 +1,138 @@
+{
+  // ── Editor defaults ─────────────────────────────────────────────────────
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.rulers": [100],
+  "editor.wordWrap": "bounded",
+  "editor.wordWrapColumn": 100,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.stickyScroll.enabled": true,
+  "editor.inlayHints.enabled": "on",
+
+  // ── Language-specific overrides ─────────────────────────────────────────
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.wordWrap": "on"
+  },
+  "[solidity]": {
+    "editor.defaultFormatter": "NomicFoundation.hardhat-solidity",
+    "editor.tabSize": 4
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.tabSize": 4
+  },
+
+  // ── TypeScript ───────────────────────────────────────────────────────────
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // ── ESLint ───────────────────────────────────────────────────────────────
+  "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.validate": ["javascript", "typescript", "typescriptreact", "javascriptreact"],
+
+  // ── Python ───────────────────────────────────────────────────────────────
+  "python.defaultInterpreterPath": "${workspaceFolder}/services/ai/.venv/bin/python",
+  "python.analysis.typeCheckingMode": "basic",
+
+  // ── Files ────────────────────────────────────────────────────────────────
+  "files.eol": "\n",
+  "files.encoding": "utf8",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": {
+    "**/.turbo": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/artifacts": true,
+    "**/cache": true,
+    "**/typechain-types": true,
+    "**/__pycache__": true,
+    "**/.venv": true
+  },
+
+  // ── Search ───────────────────────────────────────────────────────────────
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/coverage": true,
+    "**/.turbo": true,
+    "**/artifacts": true,
+    "**/typechain-types": true,
+    "pnpm-lock.yaml": true
+  },
+
+  // ── Explorer ─────────────────────────────────────────────────────────────
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, pnpm-lock.yaml, yarn.lock, .npmrc, .nvmrc",
+    "turbo.json": ".turbo",
+    "*.ts": "${capture}.js, ${capture}.d.ts, ${capture}.js.map",
+    "*.tsx": "${capture}.js",
+    ".env": ".env.*"
+  },
+
+  // ── GitLens ─────────────────────────────────────────────────────────────
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.currentLine.enabled": true,
+
+  // ── Spell checker ────────────────────────────────────────────────────────
+  "cSpell.words": [
+    "monad",
+    "ipfs",
+    "defi",
+    "dao",
+    "nft",
+    "evm",
+    "solidity",
+    "hardhat",
+    "openzeppelin",
+    "thirdweb",
+    "turbo",
+    "turborepo",
+    "nestjs",
+    "fastapi",
+    "pnpm",
+    "prisma",
+    "commitlint",
+    "husky",
+    "blockchain",
+    "blokzincir",
+    "merkeziyetsiz",
+    "decentralized"
+  ]
+}

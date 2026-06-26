@@ -1,0 +1,38 @@
+# Prettier ignore file — patterns here are excluded from formatting.
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+coverage/
+
+# TurboRepo
+.turbo/
+
+# Solidity artifacts (auto-generated)
+artifacts/
+cache/
+typechain-types/
+
+# Python virtual envs
+venv/
+.venv/
+__pycache__/
+
+# Lock files (managed by package managers)
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Auto-generated
+*.min.js
+*.min.css
+*.d.ts
+
+# Changesets
+.changeset/
