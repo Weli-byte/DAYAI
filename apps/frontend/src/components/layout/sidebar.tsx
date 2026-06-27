@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Play,
   Heart,
+  Activity,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -34,6 +35,7 @@ const navItems = [
 ];
 
 const bottomNavItems = [
+  { href: '/health', label: 'System Health', icon: Activity },
   { href: ROUTES.PROFILE, label: 'Profile', icon: User },
   { href: ROUTES.SETTINGS, label: 'Settings', icon: Settings },
 ];

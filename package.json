@@ -19,6 +19,7 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "clean": "turbo run clean && rimraf node_modules .turbo",
+    "demo:seed": "pnpm --filter @marketplace/backend prisma:seed",
     "prepare": "husky"
   },
   "devDependencies": {

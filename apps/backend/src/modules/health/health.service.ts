@@ -15,14 +15,42 @@ export class HealthService {
   ) {}
 
   async check(): Promise<HealthResponseDto> {
-    const [dbOk, redisOk] = await Promise.allSettled([
+    const aiUrl = this.config.get<string>('app.aiServiceUrl') ?? 'http://localhost:8000';
+    const rpcUrl = this.config.get<string>('MONAD_RPC_URL') ?? 'https://10143.rpc.thirdweb.com';
+
+    const [dbOk, redisOk, aiOk, rpcOk] = await Promise.allSettled([
       this.prisma.healthCheck(),
       this.redis.healthCheck(),
+      // Check AI Service
+      fetch(`${aiUrl}/health`, { signal: AbortSignal.timeout(3000) })
+        .then((res) => res.ok)
+        .catch(() =>
+          // Fallback check to main / endpoint
+          fetch(aiUrl, { signal: AbortSignal.timeout(3000) })
+            .then((res) => res.status < 500)
+            .catch(() => false),
+        ),
+      // Check Monad RPC block number query
+      fetch(rpcUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', method: 'eth_blockNumber', params: [], id: 1 }),
+        signal: AbortSignal.timeout(3000),
+      })
+        .then(async (res) => {
+          if (!res.ok) return false;
+          const json = await res.json();
+          return !!json?.result;
+        })
+        .catch(() => false),
     ]);
 
     const dbStatus = dbOk.status === 'fulfilled' && dbOk.value;
     const redisStatus = redisOk.status === 'fulfilled' && redisOk.value;
-    const allOk = dbStatus && redisStatus;
+    const aiStatus = aiOk.status === 'fulfilled' && aiOk.value;
+    const rpcStatus = rpcOk.status === 'fulfilled' && rpcOk.value;
+
+    const allOk = dbStatus && redisStatus && aiStatus && rpcStatus;
 
     return {
       status: allOk ? 'ok' : 'error',
@@ -38,6 +66,14 @@ export class HealthService {
         redis: {
           status: redisStatus ? 'up' : 'down',
           message: redisStatus ? 'Redis reachable' : 'Redis unreachable',
+        },
+        aiService: {
+          status: aiStatus ? 'up' : 'down',
+          message: aiStatus ? 'FastAPI service reachable' : 'FastAPI service unreachable',
+        },
+        monadRpc: {
+          status: rpcStatus ? 'up' : 'down',
+          message: rpcStatus ? 'Monad RPC endpoint reachable' : 'Monad RPC endpoint unreachable',
         },
       },
     };

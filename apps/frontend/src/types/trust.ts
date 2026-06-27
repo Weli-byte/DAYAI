@@ -44,4 +44,13 @@ export interface DashboardAnalyticsDto {
   totalUsers: number;
   totalInferences: number;
   averageRating: number;
+  activeCreators: number;
+  topCategories: Array<{ name: string; count: number }>;
+  recentUploads: Array<{
+    modelId: string;
+    title: string;
+    version: string;
+    creator: string;
+    createdAt: string;
+  }>;
 }

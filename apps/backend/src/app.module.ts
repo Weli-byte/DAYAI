@@ -18,6 +18,9 @@ import { appConfig } from './modules/config/app.config';
 import { databaseConfig } from './modules/config/database.config';
 import { redisConfig } from './modules/config/redis.config';
 
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+
 @Module({
   imports: [
     // ── Configuration ─────────────────────────────────────────────────────────
@@ -27,6 +30,14 @@ import { redisConfig } from './modules/config/redis.config';
       expandVariables: true,
       load: [appConfig, databaseConfig, redisConfig],
     }),
+
+    // Rate Limiting
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
 
     // ── Infrastructure ────────────────────────────────────────────────────────
     LoggerModule,
@@ -44,6 +55,12 @@ import { redisConfig } from './modules/config/redis.config';
     RatingsModule,
     FavoritesModule,
     AnalyticsModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule implements NestModule {
