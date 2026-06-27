@@ -1,0 +1,9 @@
+import { registerAs } from '@nestjs/config';
+
+export const databaseConfig = registerAs('database', () => ({
+  url:
+    process.env.DATABASE_URL ??
+    'postgresql://marketplace:marketplace_dev@localhost:5432/marketplace_db',
+  poolMin: parseInt(process.env.DATABASE_POOL_MIN ?? '2', 10),
+  poolMax: parseInt(process.env.DATABASE_POOL_MAX ?? '10', 10),
+}));

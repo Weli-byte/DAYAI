@@ -1,0 +1,170 @@
+version: '3.9'
+
+# =============================================================================
+# Decentralized AI Model Marketplace — Docker Compose
+#
+# Services:
+#   postgres    PostgreSQL 16 — primary database
+#   redis       Redis 7      — cache & pub/sub
+#   backend     NestJS API   — REST API + Swagger
+#   ai-service  FastAPI      — ML inference microservice
+#   frontend    Next.js      — web application
+#
+# Usage:
+#   docker compose up -d               # Start all services
+#   docker compose up -d postgres redis # Start only infra
+#   docker compose logs -f backend      # Follow backend logs
+#   docker compose down -v              # Stop + remove volumes
+# =============================================================================
+
+x-common-env: &common-env
+  TZ: UTC
+
+networks:
+  marketplace:
+    driver: bridge
+    name: marketplace_network
+
+volumes:
+  postgres_data:
+    name: marketplace_postgres_data
+  redis_data:
+    name: marketplace_redis_data
+  model_cache:
+    name: marketplace_model_cache
+
+services:
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: marketplace_postgres
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      POSTGRES_USER: marketplace
+      POSTGRES_PASSWORD: marketplace_dev
+      POSTGRES_DB: marketplace_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - marketplace
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U marketplace -d marketplace_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: marketplace_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - marketplace
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ── Backend (NestJS) ─────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+      target: runner
+    container_name: marketplace_backend
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://marketplace:marketplace_dev@postgres:5432/marketplace_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      AI_SERVICE_URL: http://ai-service:8000
+      CORS_ORIGIN: http://localhost:3000
+      LOG_LEVEL: info
+      SWAGGER_ENABLED: 'true'
+    ports:
+      - '4000:4000'
+    networks:
+      - marketplace
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://localhost:4000/api/v1/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ── AI Service (FastAPI) ─────────────────────────────────────────────────────
+  ai-service:
+    build:
+      context: ./services/ai-service
+      dockerfile: Dockerfile
+    container_name: marketplace_ai_service
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      APP_ENV: production
+      APP_PORT: 8000
+      APP_WORKERS: 2
+      APP_LOG_LEVEL: info
+      BACKEND_URL: http://backend:4000
+      MODEL_CACHE_DIR: /app/model-cache
+      DEVICE: cpu
+      CORS_ORIGINS: '["http://localhost:3000","http://backend:4000"]'
+    ports:
+      - '8000:8000'
+    volumes:
+      - model_cache:/app/model-cache
+    networks:
+      - marketplace
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8000/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ── Frontend (Next.js) ───────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: marketplace_frontend
+    restart: unless-stopped
+    environment:
+      <<: *common-env
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      NEXT_PUBLIC_MONAD_CHAIN_ID: '10143'
+      NEXT_PUBLIC_MONAD_RPC_URL: https://10143.rpc.thirdweb.com
+      NEXT_PUBLIC_MONAD_BLOCK_EXPLORER: https://monad-testnet.socialscan.io
+      NEXT_PUBLIC_IPFS_GATEWAY: https://ipfs.io/ipfs
+    ports:
+      - '3000:3000'
+    networks:
+      - marketplace
+    depends_on:
+      backend:
+        condition: service_healthy
+
+# =============================================================================
+# Development override: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# =============================================================================

@@ -1,0 +1,62 @@
+// =============================================================================
+// Prisma Schema — Decentralized AI Model Marketplace
+//
+// Sprint 1: Infrastructure only — datasource + client configured, no models yet.
+// Sprint 5+: AI Model, User, Listing, Transaction, Contribution tables.
+//
+// Commands:
+//   pnpm prisma:migrate  → create + apply migration
+//   pnpm prisma:generate → regenerate Prisma Client typings
+//   pnpm prisma:studio   → open Prisma Studio GUI
+//   pnpm prisma:seed     → run seed script
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+  // Enables type-safe query results and improves DX.
+  // Remove if Prisma Client is not used in the edge runtime.
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // Connection pooling via PgBouncer (Supabase, Railway, etc.)
+  // Uncomment directUrl when using a connection pooler:
+  // directUrl = env("DATABASE_DIRECT_URL")
+}
+
+// =============================================================================
+// SPRINT 5 MODELS (preview — not yet active)
+// =============================================================================
+//
+// model User {
+//   id            String   @id @default(cuid())
+//   walletAddress String   @unique @db.VarChar(42)
+//   username      String?  @unique @db.VarChar(50)
+//   bio           String?  @db.Text
+//   avatarIpfs    String?  @db.VarChar(100)
+//   createdAt     DateTime @default(now())
+//   updatedAt     DateTime @updatedAt
+//   models        AIModel[]
+//
+//   @@index([walletAddress])
+//   @@map("users")
+// }
+//
+// model AIModel {
+//   id          String   @id @default(cuid())
+//   tokenId     BigInt   @unique
+//   name        String   @db.VarChar(200)
+//   description String?  @db.Text
+//   category    String   @db.VarChar(50)
+//   metadataIpfs String  @db.VarChar(100)
+//   ownerId     String
+//   owner       User     @relation(fields: [ownerId], references: [id])
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+//
+//   @@index([ownerId])
+//   @@index([category])
+//   @@map("ai_models")
+// }
