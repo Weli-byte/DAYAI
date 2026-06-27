@@ -46,11 +46,11 @@ const UPLOAD_STAGES = [
 // ── Schema ────────────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  modelId: z.string().min(1, 'Model is required'),
+  modelId: z.string().min(1, 'Model gereklidir'),
   version: z
     .string()
-    .min(1, 'Version is required')
-    .regex(/^\d+\.\d+\.\d+$/, 'Must be a semantic version (e.g. 1.0.0)'),
+    .min(1, 'Sürüm gereklidir')
+    .regex(/^\d+\.\d+\.\d+$/, 'Semantik sürüm formatı gereklidir (örn. 1.0.0)'),
   changelog: z.string().optional(),
 });
 
@@ -86,11 +86,13 @@ function UploadModelForm() {
     setFileError(null);
     const ext = `.${f.name.split('.').pop()?.toLowerCase() ?? ''}`;
     if (!ALLOWED_EXTENSIONS.includes(ext)) {
-      setFileError(`Unsupported file type "${ext}". Allowed: ${ALLOWED_EXTENSIONS.join(', ')}`);
+      setFileError(
+        `Desteklenmeyen dosya türü "${ext}". İzin verilenler: ${ALLOWED_EXTENSIONS.join(', ')}`,
+      );
       return false;
     }
     if (f.size > MAX_SIZE_MB * 1024 * 1024) {
-      setFileError(`File too large. Maximum size is ${MAX_SIZE_MB} MB.`);
+      setFileError(`Dosya çok büyük. Maksimum boyut ${MAX_SIZE_MB} MB.`);
       return false;
     }
     return true;
@@ -222,7 +224,7 @@ function UploadModelForm() {
       <Button variant="ghost" size="sm" asChild className="gap-1 -ml-2">
         <Link href={ROUTES.MARKETPLACE}>
           <ArrowLeft className="h-4 w-4" />
-          Back
+          Geri
         </Link>
       </Button>
 
@@ -353,7 +355,7 @@ function UploadModelForm() {
           <Card>
             <CardContent className="pt-6 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{currentStage?.label ?? 'Processing…'}</span>
+                <span className="text-sm font-medium">{currentStage?.label ?? 'İşleniyor…'}</span>
                 <span className="text-xs text-muted-foreground">{progress}%</span>
               </div>
               <Progress value={progress} className="h-2" />

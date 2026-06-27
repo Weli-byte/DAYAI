@@ -23,7 +23,7 @@ const FRAMEWORK_LABELS: Record<Framework, string> = {
   SKLEARN: 'Scikit-learn',
   ONNX: 'ONNX',
   JAX: 'JAX',
-  OTHER: 'Other',
+  OTHER: 'Diğer',
 };
 
 interface ModelCardProps {

@@ -38,7 +38,7 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
         <div className="flex items-center justify-between border-b border-emerald-500/10 pb-3">
           <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
             <Terminal className="h-4 w-4" />
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider">Output</span>
+            <span className="font-mono text-xs font-semibold uppercase tracking-wider">Çıktı</span>
           </div>
           {result.output && (
             <Button

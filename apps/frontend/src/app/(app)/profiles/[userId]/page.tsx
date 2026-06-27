@@ -29,7 +29,7 @@ export default function CreatorProfilePage() {
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild className="gap-1.5">
           <Link href="/marketplace">
-            <ArrowLeft className="h-4 w-4" /> Back to Marketplace
+            <ArrowLeft className="h-4 w-4" /> Pazar Yerine Dön
           </Link>
         </Button>
       </div>
@@ -53,7 +53,7 @@ export default function CreatorProfilePage() {
           <div className="space-y-4 flex-1">
             <div className="space-y-1.5">
               <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-                {profile?.fullName || profileData?.username || 'Creator Profile'}
+                {profile?.fullName || profileData?.username || 'Yaratıcı Profili'}
               </h1>
               <p className="text-sm text-muted-foreground font-mono">
                 @{profileData?.username || 'creator'}
@@ -81,7 +81,7 @@ export default function CreatorProfilePage() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 hover:text-foreground transition-colors"
                 >
-                  <Globe className="h-3.5 w-3.5 text-primary" /> Website
+                  <Globe className="h-3.5 w-3.5 text-primary" /> Web Sitesi
                 </a>
               )}
               {profile?.twitter && (
@@ -112,7 +112,8 @@ export default function CreatorProfilePage() {
       {/* Published Models List */}
       <div className="space-y-4">
         <h3 className="text-lg font-bold flex items-center gap-2">
-          <Package className="h-5 w-5 text-primary" /> Published Models ({publishedModels.length})
+          <Package className="h-5 w-5 text-primary" /> Yayımlanan Modeller ({publishedModels.length}
+          )
         </h3>
 
         {modelsLoading || profileLoading ? (
@@ -136,10 +137,8 @@ export default function CreatorProfilePage() {
           <Card className="border-dashed">
             <CardContent className="p-12 text-center text-muted-foreground flex flex-col items-center gap-2">
               <Package className="h-8 w-8 opacity-35" />
-              <p className="text-sm font-semibold">No models published</p>
-              <p className="text-xs">
-                This creator hasn't published any models on the marketplace yet.
-              </p>
+              <p className="text-sm font-semibold">Henüz model yayımlanmamış</p>
+              <p className="text-xs">Bu yaratıcı henüz pazar yerinde model yayımlamamış.</p>
             </CardContent>
           </Card>
         )}

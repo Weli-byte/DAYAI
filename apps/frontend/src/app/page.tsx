@@ -9,82 +9,66 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ROUTES } from '@/constants/routes';
 
-// ── Feature cards data ────────────────────────────────────────────────────────
 const features = [
   {
     icon: Brain,
-    title: 'AI Models as NFTs',
+    title: 'YZ Modelleri NFT Olarak',
     description:
-      'Every model is tokenized as an ERC-721 NFT on Monad blockchain. Own, trade, and transfer AI models with cryptographic proof of ownership.',
+      'Her model Monad blokzincirinde ERC-721 NFT olarak tokenize edilir. Kriptografik sahiplik kanıtıyla YZ modellerini sahiplen, takas et ve devret.',
   },
   {
     icon: Shield,
-    title: 'On-Chain Incentives',
+    title: 'Zincir Üstü Teşvikler',
     description:
-      'Contribute training data and earn MON token rewards. Deposit-based quality mechanism inspired by Microsoft Research SUM framework.',
+      'Eğitim verisi katkısında bulun ve MON token ödülü kazan. Microsoft Research SUM çerçevesinden ilham alan depozitolu kalite mekanizması.',
   },
   {
     icon: Zap,
-    title: 'Powered by Monad',
+    title: "Monad'la Güçlendirildi",
     description:
-      '~10,000 TPS with ~1s block finality. Near-zero gas fees make AI model transactions economically viable at scale.',
+      '~10.000 TPS ve ~1 saniyelik blok kesinliği. Neredeyse sıfır gaz ücretleri ile YZ işlemleri büyük ölçekte ekonomik hale gelir.',
   },
   {
     icon: Users,
-    title: 'DAO Governance',
+    title: 'DAO Yönetişimi',
     description:
-      'Token holders vote on model updates, fee structures, and platform rules. No central authority — community-owned from day one.',
+      'Token sahipleri model güncellemeleri, ücret yapıları ve platform kurallarını oylar. Merkezi otorite yok — topluluk tarafından yönetilir.',
   },
   {
     icon: Globe,
-    title: 'IPFS Storage',
+    title: 'IPFS Depolama',
     description:
-      'Model weights stored on IPFS. Only content hashes live on-chain, keeping storage costs minimal while ensuring integrity.',
+      'Model ağırlıkları IPFS üzerinde saklanır. Yalnızca içerik hash değerleri zincire yazılır; depolama maliyetleri düşük, bütünlük garantili.',
   },
   {
     icon: Lock,
-    title: 'Full Transparency',
+    title: 'Tam Şeffaflık',
     description:
-      'Every model update, contribution, and transaction is permanently recorded on-chain. Full audit trail, zero trust required.',
+      'Her model güncellemesi, katkı ve işlem zincirde kalıcı olarak kaydedilir. Eksiksiz denetim izi, sıfır güven gereksinimi.',
   },
 ];
 
-// ── Stats ─────────────────────────────────────────────────────────────────────
 const stats = [
-  { label: 'AI Models Registered', value: '6+' },
-  { label: 'Blockchain Network', value: 'Monad Testnet' },
-  { label: 'Block Finality', value: '~1s' },
-  { label: 'Gas Fees', value: '< $0.001' },
+  { label: 'Kayıtlı YZ Modeli', value: '6+' },
+  { label: 'Blokzincir Ağı', value: 'Monad Testnet' },
+  { label: 'Blok Kesinliği', value: '~1sn' },
+  { label: 'Gaz Ücreti', value: '< $0.001' },
 ];
 
-// ── Animation Variants ────────────────────────────────────────────────────────
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 80,
-      damping: 15,
-    },
-  },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 80, damping: 15 } },
 };
 
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden bg-background">
-      {/* ── Top Navigation ── */}
+      {/* Navigasyon */}
       <motion.header
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -96,13 +80,11 @@ export default function HomePage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <Brain className="h-4 w-4 text-primary-foreground animate-pulse" />
             </div>
-            <span className="font-semibold tracking-tight text-foreground bg-clip-text">
-              Decentralized AI
-            </span>
+            <span className="font-semibold tracking-tight text-foreground">YZ Pazarı</span>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" asChild>
-              <Link href={ROUTES.DASHBOARD}>Dashboard</Link>
+              <Link href={ROUTES.DASHBOARD}>Kontrol Paneli</Link>
             </Button>
             <Button
               size="sm"
@@ -110,7 +92,7 @@ export default function HomePage() {
               className="shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300"
             >
               <Link href={ROUTES.MARKETPLACE}>
-                Explore Models
+                Modelleri Keşfet
                 <ArrowRight className="ml-2 h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -119,34 +101,17 @@ export default function HomePage() {
       </motion.header>
 
       <main className="flex-1">
-        {/* ── Hero Section ── */}
+        {/* Hero */}
         <section className="relative overflow-hidden py-24 md:py-32 lg:py-40">
-          {/* Animated decorative glow blobs */}
           <div className="pointer-events-none absolute inset-0 -z-10">
             <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                x: [0, 40, 0],
-                y: [0, -30, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+              animate={{ scale: [1, 1.2, 1], x: [0, 40, 0], y: [0, -30, 0] }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute left-1/4 top-1/4 h-[300px] w-[300px] rounded-full bg-primary/10 blur-[100px]"
             />
             <motion.div
-              animate={{
-                scale: [1, 1.3, 1],
-                x: [0, -40, 0],
-                y: [0, 30, 0],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+              animate={{ scale: [1, 1.3, 1], x: [0, -40, 0], y: [0, 30, 0] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
               className="absolute right-1/4 bottom-1/4 h-[350px] w-[350px] rounded-full bg-purple-500/10 blur-[120px]"
             />
           </div>
@@ -163,7 +128,7 @@ export default function HomePage() {
                 className="mb-6 px-4 py-1.5 bg-muted/40 backdrop-blur-sm border-primary/20"
               >
                 <Zap className="mr-1.5 h-3 w-3 text-primary animate-pulse" />
-                Built on Monad · EVM Parallelized · ~10,000 TPS
+                Monad üzerinde · EVM Paralel · ~10.000 TPS
               </Badge>
             </motion.div>
 
@@ -173,12 +138,10 @@ export default function HomePage() {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight md:text-6xl lg:text-7xl leading-tight"
             >
-              The{' '}
               <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                Decentralized
-              </span>
-              <br />
-              AI Model Marketplace
+                Merkeziyetsiz
+              </span>{' '}
+              YZ Model Pazarı
             </motion.h1>
 
             <motion.p
@@ -187,8 +150,9 @@ export default function HomePage() {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground md:text-lg lg:text-xl"
             >
-              Publish, discover, and run open-source AI models secured as NFTs. Earn rewards for
-              data contribution and query execution. Auditable, resilient, and community-owned.
+              Açık kaynak YZ modellerini NFT olarak yayımla, keşfet ve çalıştır. Veri katkısı ve
+              sorgu yürütmesi için ödül kazan. Denetlenebilir, dayanıklı ve topluluk tarafından
+              sahiplenilmiş.
             </motion.p>
 
             <motion.div
@@ -203,7 +167,7 @@ export default function HomePage() {
                 asChild
               >
                 <Link href={ROUTES.MARKETPLACE}>
-                  Explore Marketplace
+                  Pazar Yerini Keşfet
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -213,13 +177,13 @@ export default function HomePage() {
                 className="h-12 px-8 bg-background/50 backdrop-blur-sm"
                 asChild
               >
-                <Link href={ROUTES.MODEL_CREATE}>Publish a Model</Link>
+                <Link href={ROUTES.MODEL_CREATE}>Model Yayımla</Link>
               </Button>
             </motion.div>
           </div>
         </section>
 
-        {/* ── Stats Section ── */}
+        {/* İstatistikler */}
         <section className="border-y border-border/40 bg-muted/20 py-12 backdrop-blur-sm">
           <div className="container">
             <dl className="grid grid-cols-2 gap-6 md:grid-cols-4">
@@ -244,7 +208,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── Features Grid ── */}
+        {/* Özellikler */}
         <section className="py-24 relative">
           <div className="container">
             <div className="mb-16 text-center">
@@ -254,7 +218,7 @@ export default function HomePage() {
                 viewport={{ once: true }}
                 className="text-3xl font-bold tracking-tight md:text-4xl"
               >
-                Why Decentralized AI?
+                Neden Merkeziyetsiz YZ?
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -263,7 +227,7 @@ export default function HomePage() {
                 transition={{ delay: 0.2 }}
                 className="mt-4 text-muted-foreground"
               >
-                Combining Web3 cryptographic security with advanced high-performance ML pipelines.
+                Web3 kriptografik güvenliğini yüksek performanslı YZ iş hatlarıyla birleştiriyor.
               </motion.p>
             </div>
 
@@ -300,7 +264,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CTA Banner ── */}
+        {/* CTA */}
         <section className="border-t border-border/40 py-24 bg-gradient-to-b from-transparent to-muted/20">
           <div className="container text-center max-w-3xl">
             <motion.div
@@ -310,11 +274,11 @@ export default function HomePage() {
               className="space-y-6"
             >
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Ready to Join the AI Revolution?
+                YZ Devrimine Katılmaya Hazır mısın?
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
-                Connect your wallet to download verified weights, execute models in the sandbox
-                playground, and leave on-chain reviews.
+                Cüzdanını bağla, doğrulanmış model ağırlıklarını indir, deneme alanında modelleri
+                çalıştır ve zincir üstü değerlendirme bırak.
               </p>
               <Button
                 size="lg"
@@ -322,7 +286,7 @@ export default function HomePage() {
                 asChild
               >
                 <Link href={ROUTES.MARKETPLACE}>
-                  Launch Application
+                  Uygulamayı Başlat
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -331,16 +295,16 @@ export default function HomePage() {
         </section>
       </main>
 
-      {/* ── Footer ── */}
+      {/* Footer */}
       <footer className="border-t border-border/40 py-8 bg-background">
         <div className="container flex flex-col items-center justify-between gap-4 text-xs text-muted-foreground md:flex-row">
-          <p>© 2026 Decentralized AI Marketplace. MIT License.</p>
+          <p>© 2026 Merkeziyetsiz YZ Pazarı. MIT Lisansı.</p>
           <div className="flex gap-6">
             <Link href="/docs" className="hover:text-foreground transition-colors">
-              Documentation
+              Dokümanlar
             </Link>
             <Link href={ROUTES.MARKETPLACE} className="hover:text-foreground transition-colors">
-              Marketplace
+              Pazar Yeri
             </Link>
           </div>
         </div>

@@ -20,27 +20,27 @@ const now = '2026-06-27T12:00:00.000Z';
 export const demoCategories: CategoryDto[] = [
   {
     id: 'cat-health',
-    name: 'Health AI',
+    name: 'Sağlık YZ',
     slug: 'health-ai',
-    description: 'Privacy-aware diagnosis, triage, and biomedical research models.',
+    description: 'Gizlilik odaklı tanı, triyaj ve biyomedikal araştırma modelleri.',
   },
   {
     id: 'cat-language',
-    name: 'Language',
+    name: 'Dil',
     slug: 'language',
-    description: 'Summarization, translation, classification, and agent models.',
+    description: 'Özetleme, çeviri, sınıflandırma ve ajan modelleri.',
   },
   {
     id: 'cat-edge',
-    name: 'Edge AI',
+    name: 'Uç YZ',
     slug: 'edge-ai',
-    description: 'Small models designed for mobile, IoT, and low-power devices.',
+    description: 'Mobil, IoT ve düşük güçlü cihazlar için tasarlanmış küçük modeller.',
   },
   {
     id: 'cat-data',
-    name: 'Data Markets',
+    name: 'Veri Pazarları',
     slug: 'data-markets',
-    description: 'Community-owned datasets and contribution reward pools.',
+    description: 'Topluluk destekli veri setleri ve katkı ödül havuzları.',
   },
 ];
 
@@ -96,7 +96,7 @@ function model(
       id: `${id}-v${version}`,
       version,
       changelog:
-        'Latest IPFS artifact was registered on Monad Testnet with auditable model metadata.',
+        "Son IPFS artifaktı denetlenebilir model meta verileriyle Monad Testnet'te kaydedildi.",
       isLatest: true,
       createdAt: updated,
       fileCid: `bafy${id.replaceAll('-', '').slice(0, 18)}modelweights`,
@@ -113,8 +113,8 @@ function model(
 export const demoModels: ModelDto[] = [
   model(
     'health-triage-sum',
-    'Health Triage SUM Model',
-    'A compact medical triage classifier with deposit-backed data contributions and transparent version history.',
+    'Sağlık Triyaj SUM Modeli',
+    'Depozitolu veri katkıları ve şeffaf sürüm geçmişiyle kompakt bir tıbbi triyaj sınıflandırıcısı.',
     'PYTORCH',
     'cat-health',
     ['tag-monad', 'tag-ipfs', 'tag-nft', 'tag-sum'],
@@ -123,8 +123,8 @@ export const demoModels: ModelDto[] = [
   ),
   model(
     'edge-vision-cifar',
-    'EdgeVision CIFAR Verifier',
-    'Mobile-friendly image classifier optimized for edge devices and federated update experiments.',
+    'EdgeVision CIFAR Doğrulayıcı',
+    'Uç cihazlar ve federe güncelleme deneyleri için optimize edilmiş mobil uyumlu görüntü sınıflandırıcısı.',
     'ONNX',
     'cat-edge',
     ['tag-federated', 'tag-ipfs', 'tag-nft'],
@@ -133,8 +133,8 @@ export const demoModels: ModelDto[] = [
   ),
   model(
     'contract-sentinel-evm',
-    'Contract Sentinel EVMbench',
-    'Smart contract vulnerability assistant inspired by EVM security evaluation workflows.',
+    'Kontrat Sentinel EVM Kıyaslama',
+    'EVM güvenlik değerlendirme iş akışlarından ilham alan akıllı kontrat güvenlik açığı asistanı.',
     'OTHER',
     'cat-language',
     ['tag-safety', 'tag-monad', 'tag-dao'],
@@ -143,8 +143,8 @@ export const demoModels: ModelDto[] = [
   ),
   model(
     'open-data-quality-oracle',
-    'Open Data Quality Oracle',
-    'Scores contributed datasets before rewards are released from the marketplace incentive pool.',
+    'Açık Veri Kalite Kahinesi',
+    'Pazar yeri teşvik havuzundan ödüller serbest bırakılmadan önce katkı yapılan veri setlerini puanlar.',
     'SKLEARN',
     'cat-data',
     ['tag-sum', 'tag-dao', 'tag-monad'],
@@ -153,8 +153,8 @@ export const demoModels: ModelDto[] = [
   ),
   model(
     'research-summary-agent',
-    'Research Summary Agent',
-    'Summarizes papers, model cards, and DAO proposals for community review before upgrades.',
+    'Araştırma Özet Ajanı',
+    'Yükseltmelerden önce topluluk incelemesi için makaleleri, model kartlarını ve DAO tekliflerini özetler.',
     'TENSORFLOW',
     'cat-language',
     ['tag-dao', 'tag-ipfs'],
@@ -163,8 +163,8 @@ export const demoModels: ModelDto[] = [
   ),
   model(
     'air-quality-tiny-forecast',
-    'Air Quality Tiny Forecast',
-    'Low-cost public benefit forecasting model for local air quality signals and sensor networks.',
+    'Hava Kalitesi Mini Tahmin',
+    'Yerel hava kalitesi sinyalleri ve sensör ağları için düşük maliyetli kamu yararı tahmin modeli.',
     'JAX',
     'cat-edge',
     ['tag-federated', 'tag-monad'],
@@ -241,7 +241,7 @@ export function getDemoModel(id: string): ModelDto | undefined {
 
 export function createDemoModel(payload: CreateModelPayload): ModelDto {
   const createdAt = new Date().toISOString();
-  const normalizedTitle = payload.title.trim() || 'Untitled AI Model';
+  const normalizedTitle = payload.title.trim() || 'İsimsiz YZ Modeli';
   const id = `${normalizedTitle
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -250,8 +250,7 @@ export function createDemoModel(payload: CreateModelPayload): ModelDto {
   const created: ModelDto = {
     id,
     title: normalizedTitle,
-    description:
-      payload.description || 'Community-published model registered in the local demo marketplace.',
+    description: payload.description || 'Yerel demo pazar yerinde kaydedilen topluluk modeli.',
     framework: payload.framework ?? 'OTHER',
     status: payload.status ?? 'PUBLISHED',
     license: payload.license || 'MIT + On-chain commercial terms',
@@ -267,7 +266,7 @@ export function createDemoModel(payload: CreateModelPayload): ModelDto {
     latestVersion: {
       id: `${id}-v1`,
       version: '1.0.0',
-      changelog: 'Initial marketplace registration in local demo mode.',
+      changelog: 'Yerel demo modunda ilk pazar yeri kaydı.',
       isLatest: true,
       createdAt,
       fileCid: `bafy${id.replaceAll('-', '').slice(0, 18)}localweights`,
@@ -288,7 +287,7 @@ export function updateDemoModel(id: string, payload: UpdateModelPayload): ModelD
   const storedModels = readStoredModels();
   const storedIndex = storedModels.findIndex((item) => item.id === id);
   const existing = storedIndex >= 0 ? storedModels[storedIndex] : getDemoModel(id);
-  if (!existing) throw new Error('This model does not exist in the demo catalog.');
+  if (!existing) throw new Error('Bu model demo kataloğunda mevcut değil.');
 
   const updated: ModelDto = {
     ...existing,

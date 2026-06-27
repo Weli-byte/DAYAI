@@ -15,6 +15,7 @@ import {
   Play,
   Heart,
   Activity,
+  Coins,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -29,6 +30,7 @@ const navItems = [
   { href: ROUTES.DASHBOARD, label: 'Kontrol Paneli', icon: LayoutDashboard },
   { href: ROUTES.MARKETPLACE, label: 'Pazar Yeri', icon: Store },
   { href: ROUTES.PLAYGROUND, label: 'Deneme Alanı', icon: Play },
+  { href: ROUTES.EARN, label: 'Kazanç Merkezi', icon: Coins },
   { href: ROUTES.FAVORITES, label: 'Favoriler', icon: Heart },
   { href: ROUTES.MODELS, label: 'Modellerim', icon: Package },
   { href: ROUTES.MODEL_CREATE, label: 'Model Yayınla', icon: Upload },

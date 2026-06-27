@@ -11,6 +11,7 @@ export const ROUTES = {
   SETTINGS: '/settings',
   PLAYGROUND: '/playground',
   FAVORITES: '/favorites',
+  EARN: '/earn',
 } as const;
 
 export type StaticRoute = Extract<(typeof ROUTES)[keyof typeof ROUTES], string>;

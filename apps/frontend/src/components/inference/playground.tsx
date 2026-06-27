@@ -60,7 +60,7 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
             </CardDescription>
           </div>
           <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
-            Active
+            Aktif
           </span>
         </CardHeader>
         <CardContent className="space-y-4">

@@ -66,11 +66,11 @@ export default function HealthDashboardPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
             <Activity className="h-6 w-6 text-primary animate-pulse" />
-            System Health Status
+            Sistem Durumu
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Real-time status tracking for backend databases, cache services, AI inference engines,
-            and Monad RPC.
+            Arka uç veritabanları, önbellek servisleri, YZ çıkarım motorları ve Monad RPC için
+            gerçek zamanlı durum takibi.
           </p>
         </div>
         <Button
@@ -81,7 +81,7 @@ export default function HealthDashboardPage() {
           className="gap-2 self-start sm:self-center"
         >
           <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
-          {isFetching ? 'Checking...' : 'Refresh Status'}
+          {isFetching ? 'Kontrol ediliyor...' : 'Durumu Yenile'}
         </Button>
       </div>
 
@@ -101,14 +101,14 @@ export default function HealthDashboardPage() {
         <Card className="border-destructive/30 bg-destructive/5 text-center p-8">
           <CardHeader className="flex items-center justify-center">
             <XCircle className="h-12 w-12 text-destructive" />
-            <CardTitle className="text-lg mt-4">Failed to Fetch System Status</CardTitle>
+            <CardTitle className="text-lg mt-4">Sistem Durumu Alınamadı</CardTitle>
             <CardDescription>
-              The backend api server could not be reached. Ensure the NestJS server is running.
+              Arka uç API sunucusuna ulaşılamadı. NestJS sunucusunun çalıştığından emin olun.
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
             <Button size="sm" onClick={() => refetch()} variant="outline">
-              Try Again
+              Tekrar Dene
             </Button>
           </CardContent>
         </Card>
@@ -127,21 +127,21 @@ export default function HealthDashboardPage() {
                 )}
                 <div>
                   <h3 className="font-semibold text-lg">
-                    {systemStatus ? 'All Systems Operational' : 'Partial Service Disruption'}
+                    {systemStatus ? 'Tüm Sistemler Çalışıyor' : 'Kısmi Servis Kesintisi'}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Last Checked: {new Date(data.timestamp).toLocaleTimeString()} · Next check in
-                    15s
+                    Son Kontrol: {new Date(data.timestamp).toLocaleTimeString()} · Sonraki kontrol
+                    15 sn
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="hidden sm:block text-right">
-                  <span className="text-xs text-muted-foreground block">System Uptime</span>
+                  <span className="text-xs text-muted-foreground block">Sistem Çalışma Süresi</span>
                   <span className="text-sm font-mono font-medium">{formatUptime(data.uptime)}</span>
                 </div>
                 <Badge variant={systemStatus ? 'success' : 'destructive'} className="h-6 px-3">
-                  {systemStatus ? 'HEALTHY' : 'DEGRADED'}
+                  {systemStatus ? 'SAĞLIKLI' : 'BOZUK'}
                 </Badge>
               </div>
             </CardContent>
@@ -151,7 +151,7 @@ export default function HealthDashboardPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* PostgreSQL */}
             <StatusCard
-              title="PostgreSQL Database"
+              title="PostgreSQL Veritabanı"
               icon={<Database className="h-5 w-5 text-blue-500" />}
               status={data.components.database.status}
               message={data.components.database.message}
@@ -159,7 +159,7 @@ export default function HealthDashboardPage() {
 
             {/* Redis Cache */}
             <StatusCard
-              title="Redis Cache"
+              title="Redis Önbelleği"
               icon={<Layers className="h-5 w-5 text-red-500" />}
               status={data.components.redis.status}
               message={data.components.redis.message}
@@ -167,7 +167,7 @@ export default function HealthDashboardPage() {
 
             {/* AI FastAPI Service */}
             <StatusCard
-              title="AI Inference Service"
+              title="YZ Çıkarım Servisi"
               icon={<Cpu className="h-5 w-5 text-purple-500" />}
               status={data.components.aiService.status}
               message={data.components.aiService.message}
@@ -175,7 +175,7 @@ export default function HealthDashboardPage() {
 
             {/* Monad RPC */}
             <StatusCard
-              title="Monad RPC Node"
+              title="Monad RPC Düğümü"
               icon={<Zap className="h-5 w-5 text-yellow-500" />}
               status={data.components.monadRpc.status}
               message={data.components.monadRpc.message}
@@ -188,27 +188,27 @@ export default function HealthDashboardPage() {
               <CardHeader>
                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  Service Health Overview
+                  Servis Sağlık Özeti
                 </CardTitle>
-                <CardDescription>
-                  Metrics reflecting backend instance uptime metrics.
-                </CardDescription>
+                <CardDescription>Arka uç örneği çalışma süresi metrikleri.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">General Service Uptime Goal</span>
+                    <span className="text-muted-foreground">
+                      Genel Servis Çalışma Süresi Hedefi
+                    </span>
                     <span className="font-semibold text-green-500">99.9%</span>
                   </div>
                   <Progress value={99.9} className="h-2 bg-muted" />
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-2 text-center border-t border-border/40">
                   <div className="p-3 bg-muted/20 rounded-lg">
-                    <span className="text-xs text-muted-foreground block">Service Name</span>
+                    <span className="text-xs text-muted-foreground block">Servis Adı</span>
                     <span className="text-sm font-semibold mt-1 block">{data.service}</span>
                   </div>
                   <div className="p-3 bg-muted/20 rounded-lg">
-                    <span className="text-xs text-muted-foreground block">Version</span>
+                    <span className="text-xs text-muted-foreground block">Sürüm</span>
                     <span className="text-sm font-semibold mt-1 block">v{data.version}</span>
                   </div>
                 </div>
@@ -219,23 +219,21 @@ export default function HealthDashboardPage() {
               <CardHeader>
                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
                   <Activity className="h-4 w-4 text-muted-foreground" />
-                  Real-time Node Latency
+                  Gerçek Zamanlı Düğüm Gecikmesi
                 </CardTitle>
-                <CardDescription>
-                  Network responsiveness of external infrastructure.
-                </CardDescription>
+                <CardDescription>Harici altyapının ağ yanıt süresi.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">Monad Testnet RPC Latency</span>
+                    <span className="text-muted-foreground">Monad Testnet RPC Gecikmesi</span>
                     <span className="font-mono text-green-500">~240 ms</span>
                   </div>
                   <Progress value={85} className="h-2 bg-muted" />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground">IPFS Pinata Gateway</span>
+                    <span className="text-muted-foreground">IPFS Pinata Ağ Geçidi</span>
                     <span className="font-mono text-green-500">~310 ms</span>
                   </div>
                   <Progress value={78} className="h-2 bg-muted" />
@@ -277,7 +275,7 @@ function StatusCard({
             variant={isUp ? 'success' : 'destructive'}
             className={`font-semibold text-2xs uppercase tracking-wider ${isUp ? 'bg-green-500/10 text-green-500 hover:bg-green-500/10' : 'bg-destructive/10 text-destructive hover:bg-destructive/10'}`}
           >
-            {isUp ? 'Online' : 'Offline'}
+            {isUp ? 'Çevrimiçi' : 'Çevrimdışı'}
           </Badge>
         </div>
       </CardContent>

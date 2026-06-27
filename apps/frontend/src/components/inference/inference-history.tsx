@@ -116,7 +116,11 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
                   }
                   className="text-[9px] uppercase tracking-wide px-1.5 py-0"
                 >
-                  {item.status}
+                  {item.status === 'COMPLETED'
+                    ? 'Tamamlandı'
+                    : item.status === 'FAILED'
+                      ? 'Başarısız'
+                      : 'Bekliyor'}
                 </Badge>
               </div>
 
@@ -142,13 +146,13 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
                   {item.tokensUsed !== null && (
                     <span className="flex items-center gap-0.5">
                       <Cpu className="h-3 w-3 text-emerald-500/70" />
-                      Tokens: <strong>{item.tokensUsed}</strong>
+                      Token: <strong>{item.tokensUsed}</strong>
                     </span>
                   )}
                   {item.inferenceTimeMs !== null && (
                     <span className="flex items-center gap-0.5">
                       <Clock3 className="h-3 w-3 text-emerald-500/70" />
-                      Time: <strong>{item.inferenceTimeMs}ms</strong>
+                      Süre: <strong>{item.inferenceTimeMs}ms</strong>
                     </span>
                   )}
                 </div>

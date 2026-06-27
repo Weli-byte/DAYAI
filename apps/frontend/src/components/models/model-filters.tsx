@@ -19,7 +19,7 @@ const FRAMEWORKS: { value: Framework; label: string }[] = [
   { value: 'SKLEARN', label: 'Scikit-learn' },
   { value: 'ONNX', label: 'ONNX' },
   { value: 'JAX', label: 'JAX' },
-  { value: 'OTHER', label: 'Other' },
+  { value: 'OTHER', label: 'Diğer' },
 ];
 
 const STATUSES: { value: ModelStatus; label: string }[] = [
