@@ -1,38 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { Heart, Package, ShieldAlert } from 'lucide-react';
+import { Heart, Info } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { useWalletStore } from '@/store/wallet.store';
-import { useFavorites, useRemoveFavorite } from '@/hooks/use-trust';
 import { ModelCard } from '@/components/models/model-card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { demoModels } from '@/lib/demo-data';
+
+// Pre-seed 4 favorite models
+const DEMO_FAVORITES = [demoModels[0], demoModels[1], demoModels[3], demoModels[4]];
 
 export default function FavoritesPage() {
-  const { address, isConnected } = useWalletStore();
-  const [page, setPage] = useState(1);
+  const [favorites, setFavorites] = useState(DEMO_FAVORITES);
 
-  const { data: favoritesData, isLoading, refetch } = useFavorites(address || '', page, 6);
-  const removeFavoriteMutation = useRemoveFavorite();
-
-  const handleRemove = async (modelId: string) => {
-    if (!address) return;
-    try {
-      await removeFavoriteMutation.mutateAsync({
-        modelId,
-        walletAddress: address,
-      });
-      toast.success('Favorilerden kaldırıldı');
-      refetch();
-    } catch {
-      toast.error('Favorilerden kaldırılamadı');
-    }
-  };
+  function handleRemove(modelId: string) {
+    setFavorites((prev) => prev.filter((m) => m.id !== modelId));
+    toast.success('Favorilerden kaldırıldı');
+  }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
         <Heart className="h-6 w-6 text-red-500 fill-current" />
@@ -42,83 +30,44 @@ export default function FavoritesPage() {
             Yer işareti koyduğunuz veya favorilediğiniz YZ modelleri
           </p>
         </div>
+        <Badge variant="outline" className="ml-auto">
+          {favorites.length} model
+        </Badge>
       </div>
 
-      {!isConnected ? (
-        <Card className="border-dashed">
-          <CardContent className="p-12 text-center max-w-md mx-auto space-y-4">
-            <div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto text-amber-500">
-              <ShieldAlert className="h-6 w-6" />
-            </div>
-            <h3 className="font-bold text-lg">Cüzdan Bağlı Değil</h3>
-            <p className="text-sm text-muted-foreground">
-              Yer işaretlerinizi ve favorilerinizi yüklemek için Web3 cüzdanınızı bağlayın.
-            </p>
-          </CardContent>
-        </Card>
-      ) : isLoading ? (
+      {/* Info Banner */}
+      <Card className="border-blue-500/20 bg-blue-500/5">
+        <CardContent className="p-3 flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
+          <Info className="h-4 w-4 shrink-0" />
+          Cüzdanınızı bağlayarak favorilerinizi zincir üstünde kalıcı hale getirin.
+        </CardContent>
+      </Card>
+
+      {/* Favorites Grid */}
+      {favorites.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-64 rounded-xl border bg-card p-4 space-y-3">
-              <Skeleton className="h-4 w-1/3" />
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-12 w-full" />
-              <Skeleton className="h-8 w-1/4" />
+          {favorites.map((model) => (
+            <div key={model.id} className="relative group">
+              <ModelCard model={model} />
+              <button
+                className="absolute top-3 right-3 h-8 w-8 rounded-full bg-red-500 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                onClick={() => handleRemove(model.id)}
+                title="Favoriden kaldır"
+              >
+                <Heart className="h-4 w-4 fill-white text-white" />
+              </button>
             </div>
           ))}
-        </div>
-      ) : favoritesData?.items && favoritesData.items.length > 0 ? (
-        <div className="space-y-6">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {favoritesData.items.map((model) => (
-              <div key={model.id} className="relative group">
-                <ModelCard model={model} />
-                <Button
-                  variant="destructive"
-                  size="icon"
-                  className="absolute top-3 right-3 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                  onClick={() => handleRemove(model.id)}
-                >
-                  <Heart className="h-4 w-4 fill-current text-white" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination */}
-          {favoritesData.totalPages > 1 && (
-            <div className="flex justify-center gap-2 pt-4">
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={page === 1}
-                onClick={() => setPage((p) => p - 1)}
-              >
-                Önceki
-              </Button>
-              <span className="text-xs self-center text-muted-foreground">
-                Sayfa {page} / {favoritesData.totalPages}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={page === favoritesData.totalPages}
-                onClick={() => setPage((p) => p + 1)}
-              >
-                Sonraki
-              </Button>
-            </div>
-          )}
         </div>
       ) : (
         <Card className="border-dashed">
           <CardContent className="p-12 text-center max-w-md mx-auto space-y-4">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto text-primary">
-              <Package className="h-6 w-6" />
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+              <Heart className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="font-bold text-lg">Henüz favori yok</h3>
+            <h3 className="font-bold text-lg">Tüm favoriler kaldırıldı</h3>
             <p className="text-sm text-muted-foreground">
-              Henüz hiç model favorilemediniz. Modelleri keşfetmek için Pazar Yerine gidin!
+              Pazar yerinden beğendiğiniz modelleri favorileyin.
             </p>
           </CardContent>
         </Card>

@@ -1,26 +1,29 @@
-import type { Metadata } from 'next';
-import { Brain, Plus, Upload } from 'lucide-react';
+'use client';
+
 import Link from 'next/link';
+import { Brain, Plus, Upload, TrendingUp, ShoppingBag, Users } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { EmptyState } from '@/components/common/empty-state';
+import { Badge } from '@/components/ui/badge';
+import { ModelCard } from '@/components/models/model-card';
 import { ROUTES } from '@/constants/routes';
+import { demoModels } from '@/lib/demo-data';
 
-export const metadata: Metadata = {
-  title: 'My Models',
-  description: 'Manage your published AI models and monitor their performance.',
-};
+// Show first 3 demo models as "my published models"
+const MY_MODELS = demoModels.slice(0, 3);
+
+const STATS = [
+  { label: 'Yayımlanan Modeller', value: '3', icon: Brain, color: 'text-primary' },
+  { label: 'Toplam Satış', value: '47 MON', icon: ShoppingBag, color: 'text-green-500' },
+  { label: 'Katkıda Bulunanlar', value: '12', icon: Users, color: 'text-blue-500' },
+];
 
 export default function ModelsPage() {
-  // Placeholder — data will come from API + blockchain in Sprint 3/5
-  const hasModels = false;
-
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <Brain className="h-6 w-6 text-primary" />
           <div>
@@ -40,38 +43,65 @@ export default function ModelsPage() {
 
       {/* Stats row */}
       <div className="grid gap-4 sm:grid-cols-3">
-        {['Yayımlanan Modeller', 'Toplam Satış', 'Katkıda Bulunanlar'].map((label) => (
-          <Card key={label}>
+        {STATS.map((stat) => (
+          <Card key={stat.label}>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+              <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                {stat.label}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <Skeleton className="h-7 w-16" />
+              <p className="text-2xl font-bold">{stat.value}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Content */}
-      {hasModels ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Model cards will be rendered here */}
+      {/* Performance Banner */}
+      <Card className="border-green-500/20 bg-green-500/5">
+        <CardContent className="p-4 flex items-center gap-3">
+          <TrendingUp className="h-5 w-5 text-green-500 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium">Bu ay +18 MON kazandınız</p>
+            <p className="text-xs text-muted-foreground">
+              Modelleriniz toplam 284 kez çalıştırıldı. Harika ilerleme!
+            </p>
+          </div>
+          <Badge className="bg-green-500/20 text-green-600 dark:text-green-400 border-green-500/30">
+            +%12
+          </Badge>
+        </CardContent>
+      </Card>
+
+      {/* Model Grid */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-semibold">Yayımlanan Modeller</h2>
+          <Button variant="ghost" size="sm" asChild>
+            <Link href={ROUTES.MARKETPLACE}>Tüm modeller →</Link>
+          </Button>
         </div>
-      ) : (
-        <EmptyState
-          icon={Brain}
-          title="Henüz model yok"
-          description="Hiç YZ modeli yayımlamadınız. Ödül kazanmaya başlamak için ilk modelinizi yükleyin."
-          action={
-            <Button asChild>
-              <Link href={ROUTES.UPLOAD}>
-                <Upload className="mr-2 h-4 w-4" />
-                İlk Modelinizi Yükleyin
-              </Link>
-            </Button>
-          }
-        />
-      )}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {MY_MODELS.map((model) => (
+            <ModelCard key={model.id} model={model} />
+          ))}
+        </div>
+      </div>
+
+      {/* Upload CTA */}
+      <Card className="border-dashed border-primary/30 bg-primary/5">
+        <CardContent className="p-6 text-center space-y-3">
+          <Upload className="h-8 w-8 text-primary mx-auto" />
+          <h3 className="font-semibold">Yeni model yayımla</h3>
+          <p className="text-sm text-muted-foreground">
+            YZ modelinizi IPFS&apos;e yükleyin ve Monad üzerinde NFT olarak tokenize edin.
+          </p>
+          <Button asChild size="sm">
+            <Link href={ROUTES.UPLOAD}>Model Yükle</Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Navbar } from './navbar';
 import { Sidebar } from './sidebar';
 import { Footer } from './footer';
+import { AIChatbot } from '@/components/common/ai-chatbot';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,9 @@ export function AppLayout({ children }: AppLayoutProps) {
           <Footer />
         </div>
       </div>
+
+      {/* Floating AI Chatbot */}
+      <AIChatbot />
     </div>
   );
 }

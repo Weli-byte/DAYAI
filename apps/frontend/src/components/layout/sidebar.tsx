@@ -16,6 +16,7 @@ import {
   Heart,
   Activity,
   Coins,
+  BookOpen,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -37,6 +38,7 @@ const navItems = [
 ];
 
 const bottomNavItems = [
+  { href: ROUTES.REHBER, label: 'Başlangıç Rehberi', icon: BookOpen },
   { href: '/health', label: 'Sistem Durumu', icon: Activity },
   { href: ROUTES.PROFILE, label: 'Profil', icon: User },
   { href: ROUTES.SETTINGS, label: 'Ayarlar', icon: Settings },

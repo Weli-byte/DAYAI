@@ -12,6 +12,7 @@ export const ROUTES = {
   PLAYGROUND: '/playground',
   FAVORITES: '/favorites',
   EARN: '/earn',
+  REHBER: '/rehber',
 } as const;
 
 export type StaticRoute = Extract<(typeof ROUTES)[keyof typeof ROUTES], string>;

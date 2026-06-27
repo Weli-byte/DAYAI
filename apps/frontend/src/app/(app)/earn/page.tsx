@@ -134,34 +134,25 @@ interface EarnState {
   lastActiveDate: string;
 }
 
+const DEMO_SEED: EarnState = {
+  totalPoints: 285,
+  completedTasks: ['visit-marketplace', 'model-review'],
+  answeredQuestions: [1, 3],
+  streak: 3,
+  lastActiveDate: new Date().toDateString(),
+};
+
 function loadState(): EarnState {
-  if (typeof window === 'undefined')
-    return {
-      totalPoints: 0,
-      completedTasks: [],
-      answeredQuestions: [],
-      streak: 1,
-      lastActiveDate: new Date().toDateString(),
-    };
+  if (typeof window === 'undefined') return DEMO_SEED;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw)
-      return {
-        totalPoints: 0,
-        completedTasks: [],
-        answeredQuestions: [],
-        streak: 1,
-        lastActiveDate: new Date().toDateString(),
-      };
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_SEED));
+      return DEMO_SEED;
+    }
     return JSON.parse(raw);
   } catch {
-    return {
-      totalPoints: 0,
-      completedTasks: [],
-      answeredQuestions: [],
-      streak: 1,
-      lastActiveDate: new Date().toDateString(),
-    };
+    return DEMO_SEED;
   }
 }
 
