@@ -1,5 +1,1 @@
-#!/usr/bin/env sh
-# pre-commit hook — lint-staged ile sadece staged dosyaları işler.
-# Yapılandırma: root package.json → "lint-staged" anahtarı.
-. "$(dirname -- "$0")/_/husky.sh"
 npx lint-staged
