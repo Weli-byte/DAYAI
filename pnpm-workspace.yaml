@@ -1,16 +1,13 @@
 # pnpm Workspace Configuration
-# Defines which directories are included as workspace packages.
-# All packages in these directories will be linked together automatically,
-# enabling cross-package imports without publishing to npm.
+# ─────────────────────────────────────────────────────────────────────────────
+# Declares which directories are workspace packages.
+# pnpm links these together locally so cross-package imports work without
+# publishing to a registry.
 #
-# Reference: https://pnpm.io/workspaces
+# Docs: https://pnpm.io/workspaces
 
 packages:
-  # Next.js frontend application
-  - "apps/*"
-  # Shared TypeScript libraries and utilities
-  - "packages/*"
-  # Backend microservices (NestJS, FastAPI wrappers, etc.)
-  - "services/*"
-  # Solidity smart contracts (Hardhat projects)
-  - "contracts/*"
+  - "apps/*"        # Next.js frontend, docs site, etc.
+  - "services/*"    # NestJS API, FastAPI wrapper
+  - "packages/*"    # Shared TypeScript libraries and configs
+  - "contracts/*"   # Hardhat / Solidity projects

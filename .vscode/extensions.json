@@ -1,53 +1,47 @@
 {
-  // Recommended VSCode extensions for this monorepo.
-  // Install all at once: Cmd/Ctrl+Shift+P → "Extensions: Show Recommended Extensions"
+  // Önerilen VS Code uzantıları.
+  // Toplu kurulum: Ctrl+Shift+P → "Extensions: Show Recommended Extensions"
   "recommendations": [
-    // ── TypeScript / JavaScript ─────────────────────────────────────────────
+    // TypeScript / JavaScript
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ms-vscode.vscode-typescript-next",
 
-    // ── Monorepo tooling ────────────────────────────────────────────────────
-    "zxh404.vscode-proto3",
-
-    // ── Solidity ────────────────────────────────────────────────────────────
+    // Solidity
     "NomicFoundation.hardhat-solidity",
     "tintinweb.solidity-visual-auditor",
 
-    // ── Python / AI Service ─────────────────────────────────────────────────
+    // Python
     "ms-python.python",
     "ms-python.vscode-pylance",
     "ms-python.black-formatter",
     "charliermarsh.ruff",
 
-    // ── Docker ──────────────────────────────────────────────────────────────
+    // Docker
     "ms-azuretools.vscode-docker",
 
-    // ── Git & Collaboration ─────────────────────────────────────────────────
+    // Git
     "eamodio.gitlens",
     "mhutchie.git-graph",
     "github.vscode-pull-request-github",
 
-    // ── Editor enhancements ─────────────────────────────────────────────────
+    // Editor yardımcıları
     "streetsidesoftware.code-spell-checker",
     "usernamehw.errorlens",
-    "wayou.vscode-todo-highlight",
-    "gruntfuggly.todo-tree",
     "editorconfig.editorconfig",
+    "gruntfuggly.todo-tree",
 
-    // ── Markdown & Docs ─────────────────────────────────────────────────────
+    // Markdown & Docs
     "yzhang.markdown-all-in-one",
-    "bierner.markdown-preview-github-styles",
 
-    // ── YAML / JSON / TOML ──────────────────────────────────────────────────
+    // YAML / TOML
     "redhat.vscode-yaml",
     "tamasfe.even-better-toml",
 
-    // ── REST / API Testing ──────────────────────────────────────────────────
+    // REST Test
     "humao.rest-client",
 
-    // ── TurboRepo ───────────────────────────────────────────────────────────
+    // TurboRepo
     "vercel.turbo-vsc"
-  ],
-  "unwantedRecommendations": []
+  ]
 }

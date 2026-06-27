@@ -1,8 +1,8 @@
 {
   "name": "decentralized-ai-marketplace",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
-  "description": "A decentralized AI model marketplace built on Monad blockchain — enabling community-driven model sharing, IPFS storage, and on-chain incentive mechanisms.",
+  "description": "Monad blockchain üzerinde topluluk odaklı, merkeziyetsiz bir yapay zeka modeli pazaryeri.",
   "license": "MIT",
   "engines": {
     "node": ">=20.0.0",
@@ -14,17 +14,12 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css,scss,yaml,yml}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css,scss,yaml,yml}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yaml,yml,css}\"",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage",
     "clean": "turbo run clean && rimraf node_modules .turbo",
-    "clean:cache": "turbo run clean --cache-dir=.turbo",
-    "prepare": "husky",
-    "changeset": "changeset",
-    "version-packages": "changeset version",
-    "release": "turbo run build --filter=...@decentralized-ai-marketplace/* && changeset publish"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.0.0",
@@ -45,7 +40,7 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,yaml,yml,css,scss}": [
+    "*.{json,md,yaml,yml,css}": [
       "prettier --write"
     ]
   },

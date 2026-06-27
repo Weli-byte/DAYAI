@@ -2,6 +2,9 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    // ── build ──────────────────────────────────────────────────────────────
+    // Depends on upstream packages being built first (^build).
+    // Caches dist/, .next/, artifacts/ and typechain outputs.
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -15,52 +18,56 @@
       ],
       "cache": true
     },
+
+    // ── dev ────────────────────────────────────────────────────────────────
+    // Persistent (long-running) — not cached.
+    // Waits for upstream packages to be built before starting watchers.
     "dev": {
       "dependsOn": ["^build"],
       "persistent": true,
       "cache": false
     },
+
+    // ── lint ───────────────────────────────────────────────────────────────
+    // Runs after upstream lint passes. Cached by source + config inputs.
     "lint": {
       "dependsOn": ["^lint"],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "eslint.config.*",
-        ".eslintrc*",
-        ".eslintignore"
-      ],
+      "inputs": ["$TURBO_DEFAULT$", "eslint.config.*", ".eslintrc*"],
       "outputs": [],
       "cache": true
     },
+
+    // ── format ─────────────────────────────────────────────────────────────
+    // No upstream dependency — each package formats itself.
     "format": {
       "inputs": ["$TURBO_DEFAULT$", ".prettierrc*", ".prettierignore"],
       "outputs": [],
       "cache": true
     },
+
+    // ── typecheck ──────────────────────────────────────────────────────────
+    // Depends on upstream typecheck so project references resolve correctly.
     "typecheck": {
       "dependsOn": ["^typecheck"],
       "inputs": ["$TURBO_DEFAULT$", "tsconfig*.json"],
       "outputs": ["*.tsbuildinfo"],
       "cache": true
     },
+
+    // ── test ───────────────────────────────────────────────────────────────
+    // Requires a successful build before running tests.
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", "jest.config.*", "vitest.config.*"],
       "outputs": ["coverage/**"],
       "cache": true
     },
-    "test:coverage": {
-      "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": ["coverage/**"],
-      "cache": false
-    },
+
+    // ── clean ──────────────────────────────────────────────────────────────
+    // Deletes build artifacts. Never cached.
     "clean": {
       "cache": false,
       "persistent": false
-    },
-    "deploy": {
-      "dependsOn": ["build", "test", "typecheck", "lint"],
-      "cache": false
     }
   }
 }

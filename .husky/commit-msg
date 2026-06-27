@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
-# Husky commit-msg hook
-# Validates commit message format against Conventional Commits spec.
-# Configuration: "commitlint" key in root package.json.
-# Docs: https://commitlint.js.org
-
+# commit-msg hook — Conventional Commits formatını zorunlu kılar.
+# Yapılandırma: root package.json → "commitlint" anahtarı.
 . "$(dirname -- "$0")/_/husky.sh"
-
 npx --no -- commitlint --edit "$1"

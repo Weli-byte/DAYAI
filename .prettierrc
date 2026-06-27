@@ -11,8 +11,6 @@
   "bracketSameLine": false,
   "arrowParens": "always",
   "endOfLine": "lf",
-  "proseWrap": "preserve",
-  "htmlWhitespaceSensitivity": "css",
   "overrides": [
     {
       "files": "*.sol",
@@ -24,21 +22,11 @@
     },
     {
       "files": "*.py",
-      "options": {
-        "tabWidth": 4
-      }
+      "options": { "tabWidth": 4 }
     },
     {
       "files": ["*.json", "*.jsonc"],
-      "options": {
-        "trailingComma": "none"
-      }
-    },
-    {
-      "files": "*.md",
-      "options": {
-        "proseWrap": "always"
-      }
+      "options": { "trailingComma": "none" }
     }
   ]
 }

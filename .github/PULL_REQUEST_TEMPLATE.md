@@ -1,32 +1,26 @@
-## Description
+## Açıklama
 
-<!-- A clear and concise description of what this PR does and WHY it is needed.
-     Link the related issue: "Closes #123" or "Fixes #456" -->
+<!-- Bu PR ne yapıyor ve neden gerekli?
+     İlgili issue'yu bağla: "Closes #123" -->
 
 Closes #
 
-## Type of Change
+## Değişiklik Türü
 
-<!-- Check all that apply -->
+- [ ] Yeni özellik
+- [ ] Hata düzeltme
+- [ ] Breaking change
+- [ ] Refactor
+- [ ] Dokümantasyon
+- [ ] Araç / CI değişikliği
+- [ ] Akıllı sözleşme değişikliği (güvenlik incelemesi gerektirir)
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as
-      expected)
-- [ ] Refactor (no functional changes, no API changes)
-- [ ] Performance improvement
-- [ ] Documentation update
-- [ ] CI/CD / tooling change
-- [ ] Smart contract change (requires security review)
+## Test
 
-## How Has This Been Tested?
-
-<!-- Describe the tests you ran to verify your changes.
-     Include instructions so reviewers can reproduce. -->
-
-- [ ] Unit tests pass (`pnpm test`)
-- [ ] Integration tests pass
-- [ ] Manual testing — describe steps below:
+- [ ] `pnpm lint` geçiyor
+- [ ] `pnpm typecheck` geçiyor
+- [ ] `pnpm test` geçiyor
+- [ ] Manuel test adımları:
 
 ```
 1.
@@ -36,28 +30,18 @@ Closes #
 
 ## Checklist
 
-- [ ] My code follows the style guidelines of this project (`pnpm lint && pnpm format:check`)
-- [ ] I have performed a self-review of my code
-- [ ] I have commented any non-obvious code (the WHY, not the WHAT)
-- [ ] I have made corresponding changes to documentation
-- [ ] My changes generate no new TypeScript errors (`pnpm typecheck`)
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally (`pnpm test`)
-- [ ] Any dependent changes have been merged and published in downstream packages
+- [ ] Kodu kendim gözden geçirdim
+- [ ] Gerekli dokümantasyonu güncelledim
+- [ ] Yeni testler ekledim / mevcut testler kırılmadı
+- [ ] Breaking change varsa ilgili tarafları bilgilendirdim
 
-## Smart Contract Changes (if applicable)
+## Akıllı Sözleşme (varsa)
 
-- [ ] Contract changes have been reviewed by at least one security-focused reviewer
-- [ ] Natspec documentation is complete
-- [ ] Events are emitted for all state changes
-- [ ] Reentrancy guards applied where needed
-- [ ] No use of `tx.origin` for authorization
-- [ ] Gas optimization considered
+- [ ] NatSpec dokümantasyonu tamamlandı
+- [ ] Tüm state değişiklikleri event emit ediyor
+- [ ] Reentrancy koruması mevcut
+- [ ] İkinci Solidity reviewer onayı alındı
 
-## Screenshots / Recordings (if UI changes)
+## Ekran Görüntüsü / Kayıt (UI değişikliği varsa)
 
-<!-- Add before/after screenshots or a Loom recording -->
-
-## Additional Notes
-
-<!-- Anything else reviewers should know? Deployment steps? Config changes? -->
+<!-- Öncesi / sonrası ekran görüntüsü veya video -->
