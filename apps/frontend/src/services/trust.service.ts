@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api-client';
+import { demoAnalytics, demoRatingSummary, demoReviews, listDemoModels } from '@/lib/demo-data';
 import type {
   ReviewResponseDto,
   RatingSummaryDto,
@@ -44,6 +45,9 @@ export interface PaginatedFavorites {
   totalPages: number;
 }
 
+const USE_DEMO_DATA =
+  !process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_DEMO_DATA === 'true';
+
 export const trustService = {
   // ── Reviews ────────────────────────────────────────────────────────────────
   createReview: (payload: CreateReviewPayload) =>
@@ -58,15 +62,22 @@ export const trustService = {
   },
 
   getReviewsByModel: (modelId: string, page = 1, limit = 20) => {
+    if (USE_DEMO_DATA) return Promise.resolve({ ...demoReviews(modelId), page, limit });
     const q = new URLSearchParams({ page: String(page), limit: String(limit) }).toString();
-    return apiClient.get<PaginatedReviews>(`/reviews/model/${modelId}?${q}`);
+    return apiClient
+      .get<PaginatedReviews>(`/reviews/model/${modelId}?${q}`)
+      .catch(() => ({ ...demoReviews(modelId), page, limit }));
   },
 
   // ── Ratings ────────────────────────────────────────────────────────────────
   rateModel: (payload: CreateRatingPayload) => apiClient.post<any>('/ratings', payload),
 
   getRatingSummary: (modelId: string) =>
-    apiClient.get<RatingSummaryDto>(`/ratings/model/${modelId}`),
+    USE_DEMO_DATA
+      ? Promise.resolve(demoRatingSummary(modelId))
+      : apiClient
+          .get<RatingSummaryDto>(`/ratings/model/${modelId}`)
+          .catch(() => demoRatingSummary(modelId)),
 
   getUserRating: (modelId: string, walletAddress: string) =>
     apiClient.get<any>(`/ratings/model/${modelId}/user/${walletAddress}`),
@@ -80,17 +91,39 @@ export const trustService = {
   },
 
   getFavorites: (walletAddress: string, page = 1, limit = 20) => {
+    if (USE_DEMO_DATA) {
+      const models = listDemoModels({ page, limit }).data;
+      return Promise.resolve({
+        items: models.slice(0, 2),
+        total: 2,
+        page,
+        limit,
+        totalPages: 1,
+      });
+    }
     const q = new URLSearchParams({
       walletAddress,
       page: String(page),
       limit: String(limit),
     }).toString();
-    return apiClient.get<PaginatedFavorites>(`/favorites?${q}`);
+    return apiClient.get<PaginatedFavorites>(`/favorites?${q}`).catch(() => {
+      const models = listDemoModels({ page, limit }).data;
+      return {
+        items: models.slice(0, 2),
+        total: 2,
+        page,
+        limit,
+        totalPages: 1,
+      };
+    });
   },
 
   isFavorite: (modelId: string, walletAddress: string) => {
+    if (USE_DEMO_DATA) return Promise.resolve({ isFavorite: false });
     const q = new URLSearchParams({ walletAddress }).toString();
-    return apiClient.get<{ isFavorite: boolean }>(`/favorites/${modelId}/status?${q}`);
+    return apiClient
+      .get<{ isFavorite: boolean }>(`/favorites/${modelId}/status?${q}`)
+      .catch(() => ({ isFavorite: false }));
   },
 
   // ── Profiles ───────────────────────────────────────────────────────────────
@@ -104,5 +137,8 @@ export const trustService = {
     apiClient.patch<any>(`/profiles/${userId}`, payload),
 
   // ── Analytics ──────────────────────────────────────────────────────────────
-  getDashboardAnalytics: () => apiClient.get<DashboardAnalyticsDto>('/analytics/dashboard'),
+  getDashboardAnalytics: () =>
+    USE_DEMO_DATA
+      ? Promise.resolve(demoAnalytics)
+      : apiClient.get<DashboardAnalyticsDto>('/analytics/dashboard').catch(() => demoAnalytics),
 };

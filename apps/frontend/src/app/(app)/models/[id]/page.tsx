@@ -47,7 +47,7 @@ const FRAMEWORK_LABELS: Record<Framework, string> = {
   SKLEARN: 'Scikit-learn',
   ONNX: 'ONNX',
   JAX: 'JAX',
-  OTHER: 'Other',
+  OTHER: 'Diğer',
 };
 
 const STATUS_COLORS: Record<ModelStatus, string> = {
@@ -78,7 +78,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
 
   const handleFavoriteToggle = async () => {
     if (!isConnected || !address) {
-      toast.error('Connect your wallet to bookmark this model');
+      toast.error('Bu modeli favorilere eklemek için cüzdanınızı bağlayın');
       return;
     }
 
@@ -88,35 +88,35 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
           modelId: id,
           walletAddress: address,
         });
-        toast.success('Removed from favorites');
+        toast.success('Favorilerden kaldırıldı');
       } else {
         await addFavoriteMutation.mutateAsync({
           modelId: id,
           walletAddress: address,
         });
-        toast.success('Added to favorites');
+        toast.success('Favorilere eklendi');
       }
     } catch {
-      toast.error('Failed to update favorites');
+      toast.error('Favoriler güncellenemedi');
     }
   };
 
   async function handleDelete() {
-    if (!confirm('Are you sure you want to delete this model?')) return;
+    if (!confirm('Bu modeli silmek istediğinizden emin misiniz?')) return;
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success('Model deleted successfully');
+      toast.success('Model başarıyla silindi');
       router.push(ROUTES.MARKETPLACE);
     } catch {
-      toast.error('Failed to delete model');
+      toast.error('Model silinemedi');
     }
   }
 
   if (isError) {
     return (
       <ErrorState
-        title="Model not found"
-        description={(error as Error)?.message ?? 'This model does not exist or has been removed.'}
+        title="Model bulunamadı"
+        description={(error as Error)?.message ?? 'Bu model mevcut değil veya kaldırılmış.'}
       />
     );
   }
@@ -127,7 +127,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
       <Button variant="ghost" size="sm" asChild className="gap-1 -ml-2">
         <Link href={ROUTES.MARKETPLACE}>
           <ArrowLeft className="h-4 w-4" />
-          Back to Marketplace
+          Pazar Yerine Dön
         </Link>
       </Button>
 
@@ -159,7 +159,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                   <div className="flex items-center gap-1 text-xs bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 px-2 py-0.5 rounded-full font-semibold shrink-0">
                     <Star className="h-3 w-3 fill-current text-yellow-500" />
                     <span>
-                      {ratingSummary.average.toFixed(1)} ({ratingSummary.count} votes)
+                      {ratingSummary.average.toFixed(1)} ({ratingSummary.count} oy)
                     </span>
                   </div>
                 )}
@@ -182,12 +182,12 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                 disabled={addFavoriteMutation.isPending || removeFavoriteMutation.isPending}
               >
                 <Heart className={cn('h-3.5 w-3.5', isFavorite && 'fill-current text-red-500')} />
-                {isFavorite ? 'Favorited' : 'Favorite'}
+                {isFavorite ? 'Favorilendi' : 'Favorile'}
               </Button>
               <Button variant="outline" size="sm" className="gap-1" asChild>
                 <Link href={`/models/${id}/edit`}>
                   <Pencil className="h-3.5 w-3.5" />
-                  Edit
+                  Düzenle
                 </Link>
               </Button>
               <Button
@@ -198,7 +198,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                 disabled={deleteMutation.isPending}
               >
                 <Trash2 className="h-3.5 w-3.5" />
-                Delete
+                Sil
               </Button>
             </div>
           </div>
@@ -212,21 +212,21 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                   value="overview"
                   className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
                 >
-                  Overview
+                  Genel Bakış
                 </TabsTrigger>
                 {model.status === 'PUBLISHED' && (
                   <TabsTrigger
                     value="playground"
                     className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
                   >
-                    Playground
+                    Deneme Alanı
                   </TabsTrigger>
                 )}
                 <TabsTrigger
                   value="reviews"
                   className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
                 >
-                  Reviews ({reviewsData?.total || 0})
+                  Değerlendirmeler ({reviewsData?.total || 0})
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -240,7 +240,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                     <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                          <Tag className="h-4 w-4" /> Tags
+                          <Tag className="h-4 w-4" /> Etiketler
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -263,14 +263,14 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                     <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                          <GitBranch className="h-4 w-4" /> Latest Version
+                          <GitBranch className="h-4 w-4" /> Son Sürüm
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div className="flex items-center gap-2">
                           <Badge>v{model.latestVersion.version}</Badge>
                           <span className="text-xs text-muted-foreground">
-                            {new Date(model.latestVersion.createdAt).toLocaleDateString('en-US', {
+                            {new Date(model.latestVersion.createdAt).toLocaleDateString('tr-TR', {
                               month: 'long',
                               day: 'numeric',
                               year: 'numeric',
@@ -288,7 +288,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
 
                   {/* Blockchain Info */}
                   <div className="space-y-3">
-                    <h3 className="text-base font-semibold">On-Chain Asset Details</h3>
+                    <h3 className="text-base font-semibold">Zincir Üstü Varlık Detayları</h3>
                     <BlockchainInfoCards
                       nftTokenId={model.latestVersion?.nftTokenId}
                       fileCid={model.latestVersion?.fileCid}
@@ -301,7 +301,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
 
                   {/* Similar Models */}
                   <div className="space-y-4 pt-2">
-                    <h3 className="text-base font-semibold">Similar Models</h3>
+                    <h3 className="text-base font-semibold">Benzer Modeller</h3>
                     <SimilarModels categoryId={model.category?.id} currentModelId={model.id} />
                   </div>
                 </div>
@@ -317,7 +317,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                             <User className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground">Owner</p>
+                            <p className="text-xs text-muted-foreground">Sahibi</p>
                             <Link
                               href={`/profiles/${model.owner.id}`}
                               className="text-sm font-semibold hover:text-primary transition-colors hover:underline"
@@ -335,8 +335,8 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Calendar className="h-3.5 w-3.5" />
                           <span>
-                            Published{' '}
-                            {new Date(model.createdAt).toLocaleDateString('en-US', {
+                            Yayımlandı{' '}
+                            {new Date(model.createdAt).toLocaleDateString('tr-TR', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
@@ -346,8 +346,8 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Brain className="h-3.5 w-3.5" />
                           <span>
-                            Updated{' '}
-                            {new Date(model.updatedAt).toLocaleDateString('en-US', {
+                            Güncellendi{' '}
+                            {new Date(model.updatedAt).toLocaleDateString('tr-TR', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
@@ -362,7 +362,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                       <Button size="sm" className="w-full gap-1.5" asChild>
                         <Link href={`/models/upload?modelId=${id}`}>
                           <Upload className="h-3.5 w-3.5" />
-                          Upload New Version
+                          Yeni Sürüm Yükle
                         </Link>
                       </Button>
                     </CardContent>
@@ -385,7 +385,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                             <User className="h-4 w-4 text-primary" />
                           </div>
                           <div>
-                            <p className="text-xs text-muted-foreground">Owner</p>
+                            <p className="text-xs text-muted-foreground">Sahibi</p>
                             <p className="text-sm font-medium">
                               {model.owner?.username || 'Unknown'}
                             </p>
@@ -393,7 +393,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                         </div>
                         <Separator />
                         <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground">Model Framework</p>
+                          <p className="text-xs text-muted-foreground">Model Çerçevesi</p>
                           <p className="text-sm font-semibold">
                             {FRAMEWORK_LABELS[model.framework]}
                           </p>
@@ -402,7 +402,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                           <>
                             <Separator />
                             <div className="space-y-1">
-                              <p className="text-xs text-muted-foreground">License</p>
+                              <p className="text-xs text-muted-foreground">Lisans</p>
                               <p className="text-sm font-semibold">{model.license}</p>
                             </div>
                           </>

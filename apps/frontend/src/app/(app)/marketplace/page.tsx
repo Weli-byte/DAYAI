@@ -33,16 +33,16 @@ export default function MarketplacePage() {
         <div className="flex items-center gap-3">
           <Store className="h-6 w-6 text-primary" />
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Marketplace</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Pazar Yeri</h1>
             <p className="text-sm text-muted-foreground">
-              {data ? `${data.total} AI models available` : 'Discover and browse AI models'}
+              {data ? `${data.total} YZ modeli mevcut` : 'YZ modellerini keşfet ve incele'}
             </p>
           </div>
         </div>
         <Button asChild size="sm" className="gap-2">
           <Link href={ROUTES.MODEL_CREATE}>
             <PlusCircle className="h-4 w-4" />
-            Publish Model
+            Model Yayımla
           </Link>
         </Button>
       </div>
@@ -53,8 +53,10 @@ export default function MarketplacePage() {
       {/* ── Content ── */}
       {isError ? (
         <ErrorState
-          title="Failed to load models"
-          description={(error as Error)?.message ?? 'Something went wrong. Please try again.'}
+          title="Modeller yüklenemedi"
+          description={
+            (error as Error)?.message ?? 'Bir şeyler yanlış gitti. Lütfen tekrar deneyin.'
+          }
         />
       ) : isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -65,8 +67,8 @@ export default function MarketplacePage() {
       ) : data?.data.length === 0 ? (
         <EmptyState
           icon={PackageSearch}
-          title="No models found"
-          description="Try adjusting your search or filter criteria."
+          title="Model bulunamadı"
+          description="Arama veya filtre kriterlerinizi ayarlamayı deneyin."
         />
       ) : (
         <>
@@ -85,10 +87,10 @@ export default function MarketplacePage() {
                 disabled={params.page === 1}
                 onClick={() => setParams((p) => ({ ...p, page: (p.page ?? 1) - 1 }))}
               >
-                Previous
+                Önceki
               </Button>
               <span className="text-sm text-muted-foreground">
-                Page {data.page} of {data.totalPages}
+                Sayfa {data.page} / {data.totalPages}
               </span>
               <Button
                 variant="outline"
@@ -96,7 +98,7 @@ export default function MarketplacePage() {
                 disabled={data.page >= data.totalPages}
                 onClick={() => setParams((p) => ({ ...p, page: (p.page ?? 1) + 1 }))}
               >
-                Next
+                Sonraki
               </Button>
             </div>
           )}

@@ -13,8 +13,8 @@ interface ErrorStateProps {
 }
 
 export function ErrorState({
-  title = 'Something went wrong',
-  description = 'An unexpected error occurred. Please try again.',
+  title = 'Bir şeyler yanlış gitti',
+  description = 'Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.',
   onRetry,
   className,
 }: ErrorStateProps) {
@@ -35,7 +35,7 @@ export function ErrorState({
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry} className="gap-2">
           <RefreshCw className="h-4 w-4" />
-          Try Again
+          Tekrar Dene
         </Button>
       )}
     </div>

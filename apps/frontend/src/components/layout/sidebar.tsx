@@ -26,18 +26,18 @@ import { cn } from '@/lib/utils';
 
 // ── Navigation items ─────────────────────────────────────────────────────────
 const navItems = [
-  { href: ROUTES.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
-  { href: ROUTES.MARKETPLACE, label: 'Marketplace', icon: Store },
-  { href: ROUTES.PLAYGROUND, label: 'Playground', icon: Play },
-  { href: ROUTES.FAVORITES, label: 'Favorites', icon: Heart },
-  { href: ROUTES.MODELS, label: 'My Models', icon: Package },
-  { href: ROUTES.MODEL_CREATE, label: 'Publish Model', icon: Upload },
+  { href: ROUTES.DASHBOARD, label: 'Kontrol Paneli', icon: LayoutDashboard },
+  { href: ROUTES.MARKETPLACE, label: 'Pazar Yeri', icon: Store },
+  { href: ROUTES.PLAYGROUND, label: 'Deneme Alanı', icon: Play },
+  { href: ROUTES.FAVORITES, label: 'Favoriler', icon: Heart },
+  { href: ROUTES.MODELS, label: 'Modellerim', icon: Package },
+  { href: ROUTES.MODEL_CREATE, label: 'Model Yayınla', icon: Upload },
 ];
 
 const bottomNavItems = [
-  { href: '/health', label: 'System Health', icon: Activity },
-  { href: ROUTES.PROFILE, label: 'Profile', icon: User },
-  { href: ROUTES.SETTINGS, label: 'Settings', icon: Settings },
+  { href: '/health', label: 'Sistem Durumu', icon: Activity },
+  { href: ROUTES.PROFILE, label: 'Profil', icon: User },
+  { href: ROUTES.SETTINGS, label: 'Ayarlar', icon: Settings },
 ];
 
 // ── Nav Item ──────────────────────────────────────────────────────────────────
@@ -85,8 +85,8 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
           <Brain className="h-3.5 w-3.5 text-primary-foreground" />
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-semibold leading-none">AI Marketplace</span>
-          <span className="mt-0.5 text-[10px] text-sidebar-foreground/50">Powered by Monad</span>
+          <span className="text-sm font-semibold leading-none">YZ Pazarı</span>
+          <span className="mt-0.5 text-[10px] text-sidebar-foreground/50">Monad destekli</span>
         </div>
         <Badge variant="outline" className="ml-auto text-[10px]">
           Testnet
@@ -94,9 +94,9 @@ function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
       </div>
 
       {/* Main nav */}
-      <nav className="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Main navigation">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Ana gezinme">
         <p className="mb-2 px-3 text-[10px] font-medium uppercase tracking-widest text-sidebar-foreground/40">
-          Navigation
+          Menü
         </p>
         {navItems.map((item) => (
           <NavItem
@@ -167,7 +167,7 @@ export function Sidebar() {
                 size="icon"
                 className="absolute right-3 top-3.5 z-10"
                 onClick={close}
-                aria-label="Close sidebar"
+                aria-label="Menüyü kapat"
               >
                 <X className="h-4 w-4" />
               </Button>

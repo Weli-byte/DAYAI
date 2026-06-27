@@ -37,10 +37,10 @@ const ALLOWED_EXTENSIONS = ['.pt', '.pth', '.onnx', '.gguf', '.safetensors'];
 const MAX_SIZE_MB = 500;
 
 const UPLOAD_STAGES = [
-  { key: 'UPLOADING_FILE', label: 'Uploading model to IPFS…', progress: 25 },
-  { key: 'UPLOADING_METADATA', label: 'Uploading metadata to IPFS…', progress: 50 },
-  { key: 'MINTING', label: 'Minting NFT on Monad…', progress: 75 },
-  { key: 'COMPLETED', label: 'Done!', progress: 100 },
+  { key: 'UPLOADING_FILE', label: "Model IPFS'e yükleniyor…", progress: 25 },
+  { key: 'UPLOADING_METADATA', label: "Meta veriler IPFS'e yükleniyor…", progress: 50 },
+  { key: 'MINTING', label: "Monad'da NFT basılıyor…", progress: 75 },
+  { key: 'COMPLETED', label: 'Tamamlandı!', progress: 100 },
 ] as const;
 
 // ── Schema ────────────────────────────────────────────────────────────────────
@@ -111,11 +111,11 @@ function UploadModelForm() {
 
   async function onSubmit(values: FormValues) {
     if (!file) {
-      toast.error('Please select a model file.');
+      toast.error('Lütfen bir model dosyası seçin.');
       return;
     }
     if (!isConnected || !address) {
-      toast.error('Please connect your wallet first.');
+      toast.error('Lütfen önce cüzdanınızı bağlayın.');
       return;
     }
 
@@ -132,11 +132,11 @@ function UploadModelForm() {
       const mintResult = await uploadMutation.mutateAsync(formData);
       setResult(mintResult);
       setStage('COMPLETED');
-      toast.success('NFT minted successfully!');
+      toast.success('NFT başarıyla basıldı!');
     } catch (err) {
       setStage(null);
-      const msg = err instanceof Error ? err.message : 'Upload failed';
-      toast.error('Upload failed', { description: msg });
+      const msg = err instanceof Error ? err.message : 'Yükleme başarısız';
+      toast.error('Yükleme başarısız', { description: msg });
     }
   }
 
@@ -154,9 +154,9 @@ function UploadModelForm() {
         <Card className="border-green-500/30 bg-green-500/5">
           <CardHeader className="text-center pb-4">
             <CheckCircle2 className="mx-auto h-12 w-12 text-green-500" />
-            <CardTitle className="text-xl">Model Successfully Uploaded!</CardTitle>
+            <CardTitle className="text-xl">Model Başarıyla Yüklendi!</CardTitle>
             <CardDescription>
-              Your AI model is now on IPFS and minted as an NFT on Monad Testnet.
+              YZ modeliniz artık IPFS'te ve Monad Testnet'te NFT olarak basıldı.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -195,7 +195,7 @@ function UploadModelForm() {
             </InfoRow>
             <div className="pt-4 flex gap-3">
               <Button asChild className="flex-1">
-                <Link href={ROUTES.MODEL_DETAIL(result.modelId)}>View Model</Link>
+                <Link href={ROUTES.MODEL_DETAIL(result.modelId)}>Modeli Görüntüle</Link>
               </Button>
               <Button
                 variant="outline"
@@ -205,7 +205,7 @@ function UploadModelForm() {
                   setStage(null);
                 }}
               >
-                Upload Another
+                Başka Yükle
               </Button>
             </div>
           </CardContent>
@@ -227,9 +227,9 @@ function UploadModelForm() {
       </Button>
 
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Upload Model</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Model Yükle</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Upload your AI model file to IPFS and mint it as an NFT on Monad Testnet.
+          YZ model dosyanızı IPFS'e yükleyin ve Monad Testnet'te NFT olarak basın.
         </p>
       </div>
 
@@ -238,7 +238,7 @@ function UploadModelForm() {
         <Card className="border-yellow-500/30 bg-yellow-500/5">
           <CardContent className="flex items-center justify-between pt-4">
             <p className="text-sm text-yellow-700 dark:text-yellow-400">
-              Connect your wallet to upload and mint an NFT.
+              Yüklemek ve NFT basmak için cüzdanınızı bağlayın.
             </p>
             <ConnectWalletButton />
           </CardContent>
@@ -247,7 +247,7 @@ function UploadModelForm() {
         <Card className="border-green-500/30 bg-green-500/5">
           <CardContent className="flex items-center justify-between pt-4">
             <p className="text-sm text-green-700 dark:text-green-400">
-              Wallet connected: <span className="font-mono">{address?.slice(0, 10)}…</span>
+              Cüzdan bağlı: <span className="font-mono">{address?.slice(0, 10)}…</span>
             </p>
             <ConnectWalletButton />
           </CardContent>
@@ -286,11 +286,11 @@ function UploadModelForm() {
                 <div className="space-y-2">
                   <Upload className="mx-auto h-10 w-10 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
-                    <span className="font-medium text-foreground">Click to upload</span> or drag and
-                    drop
+                    <span className="font-medium text-foreground">Yüklemek için tıklayın</span> veya
+                    sürükleyip bırakın
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {ALLOWED_EXTENSIONS.join(', ')} · Max {MAX_SIZE_MB} MB
+                    {ALLOWED_EXTENSIONS.join(', ')} · Maks {MAX_SIZE_MB} MB
                   </p>
                 </div>
               )}
@@ -317,12 +317,12 @@ function UploadModelForm() {
         {/* Form fields */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Version Details</CardTitle>
+            <CardTitle className="text-base">Sürüm Detayları</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="modelId">Model ID</Label>
-              <Input id="modelId" placeholder="Enter model ID…" {...register('modelId')} />
+              <Input id="modelId" placeholder="Model ID girin…" {...register('modelId')} />
               {errors.modelId && (
                 <p className="text-xs text-destructive">{errors.modelId.message}</p>
               )}
@@ -337,10 +337,10 @@ function UploadModelForm() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="changelog">Changelog (optional)</Label>
+              <Label htmlFor="changelog">Değişiklik Günlüğü (isteğe bağlı)</Label>
               <Textarea
                 id="changelog"
-                placeholder="Describe what changed in this version…"
+                placeholder="Bu sürümdeki değişiklikleri açıklayın…"
                 rows={3}
                 {...register('changelog')}
               />
@@ -391,12 +391,12 @@ function UploadModelForm() {
           {isUploading ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              {currentStage?.label ?? 'Processing…'}
+              {currentStage?.label ?? 'İşleniyor…'}
             </>
           ) : (
             <>
               <Upload className="h-4 w-4" />
-              Upload & Mint NFT
+              Yükle ve NFT Bas
             </>
           )}
         </Button>
@@ -439,7 +439,7 @@ export default function UploadModelPage() {
       fallback={
         <div className="mx-auto max-w-2xl pt-12 text-center text-muted-foreground space-y-3">
           <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-          <p className="text-sm">Loading upload page details...</p>
+          <p className="text-sm">Yükleme sayfası hazırlanıyor...</p>
         </div>
       }
     >

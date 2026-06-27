@@ -3,6 +3,15 @@
  * Thin wrapper around apiClient — keeps components free of HTTP concerns.
  */
 import { apiClient } from '@/lib/api-client';
+import {
+  createDemoModel,
+  demoCategories,
+  demoTags,
+  getDemoModel,
+  listDemoModels,
+  removeDemoModel,
+  updateDemoModel,
+} from '@/lib/demo-data';
 import type {
   ModelDto,
   PaginatedModels,
@@ -30,26 +39,63 @@ function buildQuery(params: ModelQueryParams): string {
   return str ? `?${str}` : '';
 }
 
+const USE_DEMO_DATA =
+  !process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_DEMO_DATA === 'true';
+
 export const modelsService = {
-  list: (params: ModelQueryParams = {}) =>
-    apiClient.get<PaginatedModels>(`/models${buildQuery(params)}`),
+  list: (params: ModelQueryParams = {}) => {
+    if (USE_DEMO_DATA) return Promise.resolve(listDemoModels(params));
+    return apiClient
+      .get<PaginatedModels>(`/models${buildQuery(params)}`)
+      .catch(() => listDemoModels(params));
+  },
 
-  get: (id: string) => apiClient.get<ModelDto>(`/models/${id}`),
+  get: (id: string) => {
+    if (USE_DEMO_DATA) {
+      const demoModel = getDemoModel(id);
+      if (!demoModel) throw new Error('This model does not exist in the demo catalog.');
+      return Promise.resolve(demoModel);
+    }
+    return apiClient.get<ModelDto>(`/models/${id}`).catch(() => {
+      const demoModel = getDemoModel(id);
+      if (!demoModel) throw new Error('This model does not exist in the demo catalog.');
+      return demoModel;
+    });
+  },
 
-  create: (payload: CreateModelPayload) => apiClient.post<ModelDto>('/models', payload),
+  create: (payload: CreateModelPayload) => {
+    if (USE_DEMO_DATA) return Promise.resolve(createDemoModel(payload));
+    return apiClient.post<ModelDto>('/models', payload).catch(() => createDemoModel(payload));
+  },
 
-  update: (id: string, payload: UpdateModelPayload) =>
-    apiClient.patch<ModelDto>(`/models/${id}`, payload),
+  update: (id: string, payload: UpdateModelPayload) => {
+    if (USE_DEMO_DATA) return Promise.resolve(updateDemoModel(id, payload));
+    return apiClient
+      .patch<ModelDto>(`/models/${id}`, payload)
+      .catch(() => updateDemoModel(id, payload));
+  },
 
-  remove: (id: string) => apiClient.delete(`/models/${id}`),
+  remove: (id: string) => {
+    if (USE_DEMO_DATA) {
+      removeDemoModel(id);
+      return Promise.resolve();
+    }
+    return apiClient.delete(`/models/${id}`).catch(() => removeDemoModel(id));
+  },
 };
 
 export const categoriesService = {
-  list: () => apiClient.get<CategoryDto[]>('/categories'),
+  list: () => {
+    if (USE_DEMO_DATA) return Promise.resolve(demoCategories);
+    return apiClient.get<CategoryDto[]>('/categories').catch(() => demoCategories);
+  },
 };
 
 export const tagsService = {
-  list: () => apiClient.get<TagDto[]>('/tags'),
+  list: () => {
+    if (USE_DEMO_DATA) return Promise.resolve(demoTags);
+    return apiClient.get<TagDto[]>('/tags').catch(() => demoTags);
+  },
 };
 
 export const uploadService = {

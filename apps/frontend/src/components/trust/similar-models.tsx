@@ -40,7 +40,7 @@ export function SimilarModels({ categoryId, currentModelId }: SimilarModelsProps
     return (
       <div className="flex flex-col items-center justify-center p-8 border border-dashed rounded-lg text-center text-muted-foreground">
         <Brain className="h-8 w-8 opacity-30 mb-2" />
-        <span className="text-xs">No similar models found in this category.</span>
+        <span className="text-xs">Bu kategoride benzer model bulunamadı.</span>
       </div>
     );
   }

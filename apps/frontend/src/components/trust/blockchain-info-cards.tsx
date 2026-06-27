@@ -25,10 +25,10 @@ export function BlockchainInfoCards({
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
-      toast.success(`Copied ${key} to clipboard`);
+      toast.success(`${key} panoya kopyalandı`);
       setTimeout(() => setCopiedKey(null), 2000);
     } catch {
-      toast.error('Failed to copy');
+      toast.error('Kopyalanamadı');
     }
   };
 
@@ -39,9 +39,9 @@ export function BlockchainInfoCards({
       <Card className="border-dashed">
         <CardContent className="p-8 text-center text-muted-foreground flex flex-col items-center gap-2">
           <Shield className="h-8 w-8 opacity-35" />
-          <p className="text-sm font-semibold">Off-chain Model</p>
+          <p className="text-sm font-semibold">Zincir Dışı Model</p>
           <p className="text-xs">
-            This model version has not been minted or registered on the blockchain yet.
+            Bu model sürümü henüz zincire kaydedilmemiş veya NFT olarak basılmamış.
           </p>
         </CardContent>
       </Card>
@@ -54,34 +54,34 @@ export function BlockchainInfoCards({
       value: nftTokenId ? `#${nftTokenId}` : null,
       rawValue: nftTokenId || '',
       icon: Hash,
-      description: 'The unique ERC-721 token identifier of the model asset on Monad.',
+      description: "Monad'daki model varlığının benzersiz ERC-721 token tanımlayıcısı.",
     },
     {
-      key: 'IPFS File CID',
+      key: 'IPFS Dosya CID',
       value: fileCid
         ? `${fileCid.substring(0, 10)}...${fileCid.substring(fileCid.length - 8)}`
         : null,
       rawValue: fileCid || '',
       icon: FileCode,
-      description: 'Content identifier mapping to the model weights stored on IPFS.',
+      description: "IPFS'te depolanan model ağırlıklarına işaret eden içerik tanımlayıcısı.",
       link: `${process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs'}/${fileCid}`,
     },
     {
-      key: 'Transaction Hash',
+      key: "İşlem Hash'i",
       value: txHash ? `${txHash.substring(0, 10)}...${txHash.substring(txHash.length - 8)}` : null,
       rawValue: txHash || '',
       icon: Landmark,
-      description: 'The transaction hash from when this model was registered on-chain.',
+      description: "Modelin zincire kaydedildiği andaki işlem hash'i.",
       link: `https://monad-testnet.socialscan.io/tx/${txHash}`,
     },
     {
-      key: 'Creator Wallet',
+      key: 'Yaratıcı Cüzdan',
       value: ownerAddress
         ? `${ownerAddress.substring(0, 8)}...${ownerAddress.substring(ownerAddress.length - 6)}`
         : null,
       rawValue: ownerAddress || '',
       icon: Shield,
-      description: 'The Web3 address of the model creator registered at mint time.',
+      description: 'NFT basımı sırasında kaydedilen model yaratıcısının Web3 adresi.',
     },
   ];
 

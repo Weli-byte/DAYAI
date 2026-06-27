@@ -25,7 +25,7 @@ import { ROUTES } from '@/constants/routes';
 
 // ── Validation schema ─────────────────────────────────────────────────────────
 const schema = z.object({
-  title: z.string().min(2, 'Title must be at least 2 characters').max(200),
+  title: z.string().min(2, 'Başlık en az 2 karakter olmalıdır').max(200),
   description: z.string().optional(),
   framework: z.enum(['PYTORCH', 'TENSORFLOW', 'SKLEARN', 'ONNX', 'JAX', 'OTHER']).optional(),
   status: z.enum(['DRAFT', 'PUBLISHED', 'ARCHIVED']).optional(),
@@ -65,10 +65,10 @@ export default function CreateModelPage() {
         categoryId: values.categoryId,
         ownerId: values.ownerId,
       });
-      toast.success('Model created successfully');
+      toast.success('Model başarıyla oluşturuldu');
       router.push(ROUTES.MODEL_DETAIL(model.id));
     } catch (err) {
-      toast.error((err as Error)?.message ?? 'Failed to create model');
+      toast.error((err as Error)?.message ?? 'Model oluşturulamadı');
     }
   }
 
@@ -78,7 +78,7 @@ export default function CreateModelPage() {
       <Button variant="ghost" size="sm" asChild className="gap-1 -ml-2">
         <Link href={ROUTES.MARKETPLACE}>
           <ArrowLeft className="h-4 w-4" />
-          Back to Marketplace
+          Pazar Yerine Dön
         </Link>
       </Button>
 
@@ -86,9 +86,9 @@ export default function CreateModelPage() {
       <div className="flex items-center gap-3">
         <PlusCircle className="h-6 w-6 text-primary" />
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Publish AI Model</h1>
+          <h1 className="text-2xl font-bold tracking-tight">YZ Modeli Yayımla</h1>
           <p className="text-sm text-muted-foreground">
-            Register your AI model in the marketplace registry.
+            YZ modelinizi pazar yeri kayıt defterine ekleyin.
           </p>
         </div>
       </div>
@@ -98,17 +98,17 @@ export default function CreateModelPage() {
         {/* Basic Info */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Basic Information</CardTitle>
+            <CardTitle className="text-base">Temel Bilgiler</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Title */}
             <div className="space-y-1.5">
               <Label htmlFor="title">
-                Model Name <span className="text-destructive">*</span>
+                Model Adı <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="title"
-                placeholder="e.g. CIFAR-10 ResNet Classifier"
+                placeholder="örn. CIFAR-10 ResNet Sınıflandırıcı"
                 {...register('title')}
               />
               {errors.title && <p className="text-xs text-destructive">{errors.title.message}</p>}
@@ -116,10 +116,10 @@ export default function CreateModelPage() {
 
             {/* Description */}
             <div className="space-y-1.5">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Açıklama</Label>
               <Textarea
                 id="description"
-                placeholder="Describe your model — architecture, training data, use-case, performance metrics…"
+                placeholder="Modelinizi açıklayın — mimari, eğitim verisi, kullanım senaryosu, performans metrikleri…"
                 rows={4}
                 {...register('description')}
               />
@@ -130,18 +130,18 @@ export default function CreateModelPage() {
         {/* Classification */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Classification</CardTitle>
+            <CardTitle className="text-base">Sınıflandırma</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             {/* Framework */}
             <div className="space-y-1.5">
-              <Label>Framework</Label>
+              <Label>Çerçeve</Label>
               <Select
                 value={watch('framework')}
                 onValueChange={(v) => setValue('framework', v as FormValues['framework'])}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select framework" />
+                  <SelectValue placeholder="Çerçeve seçin" />
                 </SelectTrigger>
                 <SelectContent>
                   {[
@@ -150,7 +150,7 @@ export default function CreateModelPage() {
                     { value: 'SKLEARN', label: 'Scikit-learn' },
                     { value: 'ONNX', label: 'ONNX' },
                     { value: 'JAX', label: 'JAX' },
-                    { value: 'OTHER', label: 'Other' },
+                    { value: 'OTHER', label: 'Diğer' },
                   ].map((f) => (
                     <SelectItem key={f.value} value={f.value}>
                       {f.label}
@@ -162,16 +162,16 @@ export default function CreateModelPage() {
 
             {/* Category */}
             <div className="space-y-1.5">
-              <Label>Category</Label>
+              <Label>Kategori</Label>
               <Select
                 value={watch('categoryId') ?? '_none'}
                 onValueChange={(v) => setValue('categoryId', v === '_none' ? undefined : v)}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
+                  <SelectValue placeholder="Kategori seçin" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="_none">No category</SelectItem>
+                  <SelectItem value="_none">Kategori yok</SelectItem>
                   {categories.map((c) => (
                     <SelectItem key={c.id} value={c.id}>
                       {c.name}
@@ -183,7 +183,7 @@ export default function CreateModelPage() {
 
             {/* Status */}
             <div className="space-y-1.5">
-              <Label>Status</Label>
+              <Label>Durum</Label>
               <Select
                 value={watch('status')}
                 onValueChange={(v) => setValue('status', v as FormValues['status'])}
@@ -192,16 +192,16 @@ export default function CreateModelPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="DRAFT">Draft</SelectItem>
-                  <SelectItem value="PUBLISHED">Published</SelectItem>
-                  <SelectItem value="ARCHIVED">Archived</SelectItem>
+                  <SelectItem value="DRAFT">Taslak</SelectItem>
+                  <SelectItem value="PUBLISHED">Yayımlandı</SelectItem>
+                  <SelectItem value="ARCHIVED">Arşivlendi</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* License */}
             <div className="space-y-1.5">
-              <Label htmlFor="license">License</Label>
+              <Label htmlFor="license">Lisans</Label>
               <Input
                 id="license"
                 placeholder="MIT, Apache-2.0, CC-BY-4.0…"
@@ -215,12 +215,11 @@ export default function CreateModelPage() {
         {tags.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Available Tags</CardTitle>
+              <CardTitle className="text-base">Mevcut Etiketler</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground mb-3">
-                Tag assignment via the API — tag filter will be wired to this form in the next
-                iteration.
+                Etiket atama API üzerinden yapılır — sonraki sürümde bu forma entegre edilecek.
               </p>
               <div className="flex flex-wrap gap-2">
                 {tags.map((t) => (
@@ -239,11 +238,11 @@ export default function CreateModelPage() {
         {/* Actions */}
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="outline" asChild>
-            <Link href={ROUTES.MARKETPLACE}>Cancel</Link>
+            <Link href={ROUTES.MARKETPLACE}>İptal</Link>
           </Button>
           <Button type="submit" disabled={isSubmitting} className="gap-2">
             <PlusCircle className="h-4 w-4" />
-            {isSubmitting ? 'Publishing…' : 'Publish Model'}
+            {isSubmitting ? 'Yayımlanıyor…' : 'Modeli Yayımla'}
           </Button>
         </div>
       </form>

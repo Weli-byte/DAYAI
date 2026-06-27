@@ -22,20 +22,20 @@ function ThemeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Toggle theme">
+        <Button variant="ghost" size="icon" aria-label="Temayı değiştir">
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <Sun className="mr-2 h-4 w-4" /> Light
+          <Sun className="mr-2 h-4 w-4" /> Açık
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <Moon className="mr-2 h-4 w-4" /> Dark
+          <Moon className="mr-2 h-4 w-4" /> Koyu
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <Laptop className="mr-2 h-4 w-4" /> System
+          <Laptop className="mr-2 h-4 w-4" /> Sistem
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -54,7 +54,7 @@ export function Navbar() {
         size="icon"
         className="mr-2 lg:hidden"
         onClick={toggle}
-        aria-label="Toggle sidebar"
+        aria-label="Menüyü aç/kapat"
       >
         <Menu className="h-5 w-5" />
       </Button>
@@ -63,12 +63,12 @@ export function Navbar() {
       <Link
         href={ROUTES.HOME}
         className="flex items-center gap-2 lg:hidden"
-        aria-label="Go to home"
+        aria-label="Ana sayfaya git"
       >
         <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
           <Brain className="h-3.5 w-3.5 text-primary-foreground" />
         </div>
-        <span className="font-semibold text-sm">AI Market</span>
+        <span className="font-semibold text-sm">YZ Pazarı</span>
       </Link>
 
       {/* Spacer */}

@@ -52,11 +52,11 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
           <div>
             <CardTitle className="flex items-center gap-2 text-xl font-bold">
               <Brain className="h-5 w-5 text-primary" />
-              AI Playground
+              YZ Deneme Alanı
             </CardTitle>
             <CardDescription>
-              Test and run <span className="font-semibold text-foreground">{modelTitle}</span>{' '}
-              directly from your browser.
+              <span className="font-semibold text-foreground">{modelTitle}</span> modelini doğrudan
+              tarayıcınızdan test edin ve çalıştırın.
             </CardDescription>
           </div>
           <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary">
@@ -67,9 +67,9 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
           {!isConnected ? (
             <Alert variant="warning" className="border-amber-500/20 bg-amber-500/5">
               <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-              <AlertTitle>Wallet Connection Required</AlertTitle>
+              <AlertTitle>Cüzdan Bağlantısı Gerekli</AlertTitle>
               <AlertDescription className="mt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <span>Please connect your MetaMask wallet to interact with this AI model.</span>
+                <span>Bu YZ modeli ile etkileşime geçmek için MetaMask cüzdanınızı bağlayın.</span>
                 <ConnectWalletButton />
               </AlertDescription>
             </Alert>
@@ -78,12 +78,12 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
               {/* Prompt Textarea */}
               <div className="space-y-2">
                 <Label htmlFor="prompt" className="text-sm font-medium">
-                  Prompt
+                  Sorgu (Prompt)
                 </Label>
                 <div className="relative">
                   <Textarea
                     id="prompt"
-                    placeholder="Enter your prompt here..."
+                    placeholder="Sorgunuzu buraya girin..."
                     className="min-h-[120px] resize-none pr-10 focus-visible:ring-primary"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
@@ -107,7 +107,7 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
                   className="h-8 gap-1.5 text-xs text-muted-foreground hover:text-foreground"
                 >
                   <Sliders className="h-3.5 w-3.5" />
-                  {showParams ? 'Hide parameters' : 'Show parameters'}
+                  {showParams ? 'Parametreleri gizle' : 'Parametreleri göster'}
                 </Button>
               </div>
 
@@ -118,7 +118,7 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label htmlFor="max-tokens" className="text-xs font-medium">
-                          Max Tokens
+                          Maks Token
                         </Label>
                         <span className="font-mono text-xs font-semibold text-muted-foreground">
                           {maxTokens}
@@ -135,14 +135,14 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
                         className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
                       />
                       <span className="text-[10px] text-muted-foreground block">
-                        Maximum length of the generated output.
+                        Üretilen çıktının maksimum uzunluğu.
                       </span>
                     </div>
 
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <Label htmlFor="temperature" className="text-xs font-medium">
-                          Temperature
+                          Sıcaklık
                         </Label>
                         <span className="font-mono text-xs font-semibold text-muted-foreground">
                           {temperature.toFixed(1)}
@@ -160,7 +160,7 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
                         className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-secondary accent-primary"
                       />
                       <span className="text-[10px] text-muted-foreground block">
-                        Controls randomness: higher values increase creativity.
+                        Rastgeleliği kontrol eder: yüksek değerler yaratıcılığı artırır.
                       </span>
                     </div>
                   </CardContent>
@@ -176,12 +176,12 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
                 {isRunning ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Generating response...
+                    Yanıt üretiliyor...
                   </>
                 ) : (
                   <>
                     <Play className="h-4 w-4 fill-current" />
-                    Run Model
+                    Modeli Çalıştır
                   </>
                 )}
               </Button>
@@ -194,11 +194,11 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
       {runMutation.isError && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Generation Failed</AlertTitle>
+          <AlertTitle>Üretim Başarısız</AlertTitle>
           <AlertDescription>
             {runMutation.error instanceof Error
               ? runMutation.error.message
-              : 'An error occurred during inference. Please check if the AI service is running.'}
+              : 'Çıkarım sırasında bir hata oluştu. YZ servisi çalışıyor mu kontrol edin.'}
           </AlertDescription>
         </Alert>
       )}
@@ -208,7 +208,7 @@ export function Playground({ modelId, modelTitle }: PlaygroundProps) {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold flex items-center gap-1.5 text-muted-foreground pl-1">
             <Sparkles className="h-4 w-4 text-emerald-500" />
-            Generation result
+            Üretim sonucu
           </h3>
           <InferenceResultCard result={runMutation.data} />
         </div>

@@ -33,7 +33,7 @@ interface ModelCardProps {
 export function ModelCard({ model }: ModelCardProps) {
   const detailHref = ROUTES.MODEL_DETAIL(model.id);
   const latestVersion = model.latestVersion?.version ?? '—';
-  const updatedAt = new Date(model.updatedAt).toLocaleDateString('en-US', {
+  const updatedAt = new Date(model.updatedAt).toLocaleDateString('tr-TR', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -114,13 +114,13 @@ export function ModelCard({ model }: ModelCardProps) {
               >
                 <Link href={`${detailHref}?tab=playground`}>
                   <Play className="h-3 w-3 fill-current" />
-                  Run
+                  Çalıştır
                 </Link>
               </Button>
             )}
             <Button size="sm" variant="ghost" className="h-8 gap-1 text-[11px] px-2.5" asChild>
               <Link href={detailHref}>
-                Details
+                Detaylar
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>

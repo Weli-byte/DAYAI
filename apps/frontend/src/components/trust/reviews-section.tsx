@@ -47,7 +47,7 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
 
   const handleRate = async (val: number) => {
     if (!isConnected || !address) {
-      toast.error('Connect your wallet to submit a rating');
+      toast.error('Puan vermek için cüzdanınızı bağlayın');
       return;
     }
     try {
@@ -57,20 +57,20 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
         value: val,
       });
       setRatingVal(val);
-      toast.success('Rating submitted successfully');
+      toast.success('Puan başarıyla gönderildi');
     } catch {
-      toast.error('Failed to submit rating');
+      toast.error('Puan gönderilemedi');
     }
   };
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isConnected || !address) {
-      toast.error('Connect your wallet to submit a review');
+      toast.error('Değerlendirme göndermek için cüzdanınızı bağlayın');
       return;
     }
     if (content.trim().length < 3) {
-      toast.error('Review must be at least 3 characters long');
+      toast.error('Değerlendirme en az 3 karakter olmalıdır');
       return;
     }
 
@@ -81,16 +81,16 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
         content: content.trim(),
       });
       setContent('');
-      toast.success('Review published successfully');
+      toast.success('Değerlendirme başarıyla yayımlandı');
     } catch {
-      toast.error('Failed to submit review');
+      toast.error('Değerlendirme gönderilemedi');
     }
   };
 
   const handleEditSubmit = async (id: string) => {
     if (!address) return;
     if (editContent.trim().length < 3) {
-      toast.error('Review must be at least 3 characters long');
+      toast.error('Değerlendirme en az 3 karakter olmalıdır');
       return;
     }
 
@@ -103,24 +103,24 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
         },
       });
       setEditingReviewId(null);
-      toast.success('Review updated successfully');
+      toast.success('Değerlendirme başarıyla güncellendi');
     } catch {
-      toast.error('Failed to update review');
+      toast.error('Değerlendirme güncellenemedi');
     }
   };
 
   const handleDelete = async (id: string) => {
     if (!address) return;
-    if (!confirm('Are you sure you want to delete this review?')) return;
+    if (!confirm('Bu değerlendirmeyi silmek istediğinizden emin misiniz?')) return;
 
     try {
       await deleteReviewMutation.mutateAsync({
         id,
         walletAddress: address,
       });
-      toast.success('Review deleted successfully');
+      toast.success('Değerlendirme başarıyla silindi');
     } catch {
-      toast.error('Failed to delete review');
+      toast.error('Değerlendirme silinemedi');
     }
   };
 
@@ -133,7 +133,7 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
         <Card className="md:col-span-1 flex flex-col justify-center items-center p-6 text-center">
           <CardHeader className="p-0 pb-2">
             <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Average Rating
+              Ortalama Puan
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0 space-y-2">
@@ -159,8 +159,8 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
             </div>
             <p className="text-xs text-muted-foreground">
               {ratingSummaryLoading
-                ? 'Loading votes...'
-                : `Based on ${ratingSummary?.count || 0} reviews`}
+                ? 'Oylar yükleniyor...'
+                : `${ratingSummary?.count || 0} değerlendirmeye dayanıyor`}
             </p>
           </CardContent>
         </Card>
@@ -168,11 +168,11 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
         {/* ── User Rating Submission ── */}
         <Card className="md:col-span-2 p-6 flex flex-col justify-center">
           <CardHeader className="p-0 pb-3">
-            <CardTitle className="text-base font-semibold">Your Rating</CardTitle>
+            <CardTitle className="text-base font-semibold">Puanınız</CardTitle>
             <CardDescription className="text-xs">
               {isConnected
-                ? 'Select stars to submit or update your rating for this model.'
-                : 'Please connect your wallet to rate this model.'}
+                ? 'Bu modeli puanlamak veya puanınızı güncellemek için yıldız seçin.'
+                : 'Bu modeli puanlamak için cüzdanınızı bağlayın.'}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0 space-y-3">
@@ -204,7 +204,7 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
               </div>
               {activeRating > 0 && (
                 <span className="text-sm font-semibold text-muted-foreground">
-                  ({activeRating} / 5 stars)
+                  ({activeRating} / 5 yıldız)
                 </span>
               )}
             </div>
@@ -215,26 +215,26 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
       {/* ── Write Review Form ── */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold">Write a Review</CardTitle>
+          <CardTitle className="text-base font-semibold">Değerlendirme Yaz</CardTitle>
         </CardHeader>
         <CardContent>
           {isConnected ? (
             <form onSubmit={handleReviewSubmit} className="space-y-4">
               <Textarea
-                placeholder="Share your experience using this AI model. What worked well? How is the latency and token precision?"
+                placeholder="Bu YZ modeli ile deneyiminizi paylaşın. Neler iyi çalıştı? Gecikme ve token hassasiyeti nasıl?"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="min-h-[100px]"
                 maxLength={1000}
               />
               <div className="flex justify-between items-center text-xs text-muted-foreground">
-                <span>{content.length}/1000 characters</span>
+                <span>{content.length}/1000 karakter</span>
                 <Button
                   type="submit"
                   disabled={createReviewMutation.isPending || content.trim().length < 3}
                   className="gap-2"
                 >
-                  {createReviewMutation.isPending ? 'Publishing...' : 'Publish Review'}
+                  {createReviewMutation.isPending ? 'Yayımlanıyor...' : 'Değerlendirmeyi Yayımla'}
                 </Button>
               </div>
             </form>
@@ -243,10 +243,10 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
               <AlertTriangle className="h-5 w-5 text-amber-500 shrink-0 mt-0.5" />
               <div>
                 <h5 className="font-semibold text-sm text-amber-600 dark:text-amber-400">
-                  Wallet Connection Required
+                  Cüzdan Bağlantısı Gerekli
                 </h5>
                 <p className="text-xs text-muted-foreground mt-1">
-                  You must connect your Web3 wallet to write comments and evaluate models.
+                  Yorum yazmak ve modelleri değerlendirmek için Web3 cüzdanınızı bağlamalısınız.
                 </p>
               </div>
             </div>
@@ -258,7 +258,7 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
       <div className="space-y-4">
         <h4 className="font-bold text-lg flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-primary" />
-          Reviews ({reviewsData?.total || 0})
+          Değerlendirmeler ({reviewsData?.total || 0})
         </h4>
 
         {reviewsLoading ? (
@@ -372,14 +372,14 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
                             onClick={() => setEditingReviewId(null)}
                             className="h-8 text-xs gap-1"
                           >
-                            <X className="h-3.5 w-3.5" /> Cancel
+                            <X className="h-3.5 w-3.5" /> İptal
                           </Button>
                           <Button
                             size="sm"
                             onClick={() => handleEditSubmit(review.id)}
                             className="h-8 text-xs gap-1"
                           >
-                            <Check className="h-3.5 w-3.5" /> Save
+                            <Check className="h-3.5 w-3.5" /> Kaydet
                           </Button>
                         </div>
                       </div>
@@ -402,10 +402,10 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
                 >
-                  Previous
+                  Önceki
                 </Button>
                 <span className="text-xs self-center text-muted-foreground">
-                  Page {page} of {reviewsData.totalPages}
+                  Sayfa {page} / {reviewsData.totalPages}
                 </span>
                 <Button
                   variant="outline"
@@ -413,7 +413,7 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
                   disabled={page === reviewsData.totalPages}
                   onClick={() => setPage((p) => p + 1)}
                 >
-                  Next
+                  Sonraki
                 </Button>
               </div>
             )}
@@ -422,9 +422,9 @@ export function ReviewsSection({ modelId }: ReviewsSectionProps) {
           <Card className="p-8 text-center border-dashed">
             <CardContent className="space-y-3 pt-4">
               <MessageSquare className="h-10 w-10 text-muted-foreground/40 mx-auto" />
-              <h5 className="font-semibold text-sm">No reviews yet</h5>
+              <h5 className="font-semibold text-sm">Henüz değerlendirme yok</h5>
               <p className="text-xs text-muted-foreground">
-                Be the first to share your thoughts about this AI model.
+                Bu YZ modeli hakkındaki düşüncelerinizi ilk paylaşan siz olun.
               </p>
             </CardContent>
           </Card>

@@ -22,19 +22,19 @@ export function ConnectWalletButton() {
 
   async function handleConnect() {
     if (!isMetaMaskInstalled()) {
-      toast.error('MetaMask not found', {
-        description: 'Please install MetaMask browser extension to connect your wallet.',
+      toast.error('MetaMask bulunamadı', {
+        description: 'Cüzdanınızı bağlamak için MetaMask tarayıcı uzantısını yükleyin.',
       });
       return;
     }
     try {
       await connect();
-      toast.success('Wallet connected', {
+      toast.success('Cüzdan bağlandı', {
         description: shortAddress(useWalletStore.getState().address!),
       });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Connection failed';
-      toast.error('Connection failed', { description: msg });
+      const msg = err instanceof Error ? err.message : 'Bağlantı başarısız';
+      toast.error('Bağlantı başarısız', { description: msg });
     }
   }
 
@@ -42,7 +42,7 @@ export function ConnectWalletButton() {
     return (
       <Button variant="outline" size="sm" disabled className="gap-2">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Connecting…
+        Bağlanıyor…
       </Button>
     );
   }
@@ -58,28 +58,28 @@ export function ConnectWalletButton() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <div className="px-3 py-2">
-            <p className="text-xs text-muted-foreground">Connected wallet</p>
+            <p className="text-xs text-muted-foreground">Bağlı cüzdan</p>
             <p className="font-mono text-xs mt-0.5 break-all">{address}</p>
           </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="gap-2 text-muted-foreground"
             onClick={() =>
-              navigator.clipboard.writeText(address).then(() => toast.success('Address copied'))
+              navigator.clipboard.writeText(address).then(() => toast.success('Adres kopyalandı'))
             }
           >
-            Copy address
+            Adresi kopyala
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="gap-2 text-destructive"
             onClick={() => {
               disconnect();
-              toast.info('Wallet disconnected');
+              toast.info('Cüzdan bağlantısı kesildi');
             }}
           >
             <LogOut className="h-4 w-4" />
-            Disconnect
+            Bağlantıyı Kes
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -89,7 +89,7 @@ export function ConnectWalletButton() {
   return (
     <Button variant="outline" size="sm" className="gap-2" onClick={handleConnect}>
       <Wallet className="h-4 w-4" />
-      Connect Wallet
+      Cüzdan Bağla
     </Button>
   );
 }
@@ -100,7 +100,7 @@ export function WalletRequired() {
     <div className="flex items-center gap-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-600 dark:text-yellow-400">
       <AlertCircle className="h-4 w-4 shrink-0" />
       <span>
-        Please <ConnectWalletButton /> to upload a model and mint an NFT.
+        Model yükleyip NFT basmak için lütfen <ConnectWalletButton /> bağlayın.
       </span>
     </div>
   );

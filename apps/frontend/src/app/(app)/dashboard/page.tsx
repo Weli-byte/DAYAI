@@ -13,28 +13,28 @@ export default function DashboardPage() {
 
   const metrics = [
     {
-      title: 'Total Models',
+      title: 'Toplam Model',
       value: isLoading ? null : analytics?.totalModels,
       icon: Package,
-      description: 'AI models published on the marketplace.',
+      description: 'Pazarda yayımlanan YZ modelleri.',
     },
     {
-      title: 'NFT Registered',
+      title: 'NFT Kayıtlı',
       value: isLoading ? null : analytics?.totalNftModels,
       icon: Shield,
-      description: 'Models minted on Monad Testnet.',
+      description: "Monad Testnet'te basılan modeller.",
     },
     {
-      title: 'Active Creators',
+      title: 'Aktif Yaratıcı',
       value: isLoading ? null : analytics?.activeCreators,
       icon: Users,
-      description: 'Total active model developers.',
+      description: 'Toplam aktif model geliştiricisi.',
     },
     {
-      title: 'Total Inferences',
+      title: 'Toplam Çıkarım',
       value: isLoading ? null : analytics?.totalInferences,
       icon: Cpu,
-      description: 'Model executions run on marketplace.',
+      description: 'Pazarda çalıştırılan model işlemleri.',
     },
   ];
 
@@ -48,9 +48,9 @@ export default function DashboardPage() {
       <div className="flex items-center gap-3">
         <LayoutDashboard className="h-6 w-6 text-primary" />
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Marketplace Analytics</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Pazar Yeri Analitiği</h1>
           <p className="text-sm text-muted-foreground">
-            Real-time statistics and usage metrics overview
+            Gerçek zamanlı istatistikler ve kullanım metrikleri
           </p>
         </div>
       </div>
@@ -83,8 +83,8 @@ export default function DashboardPage() {
         <div className="md:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Top Categories</CardTitle>
-              <CardDescription>Distribution of models across different categories.</CardDescription>
+              <CardTitle className="text-base">En Popüler Kategoriler</CardTitle>
+              <CardDescription>Modellerin kategorilere göre dağılımı.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {isLoading ? (
@@ -101,7 +101,7 @@ export default function DashboardPage() {
                 </div>
               ) : !analytics?.topCategories || analytics.topCategories.length === 0 ? (
                 <p className="text-sm text-muted-foreground text-center py-6">
-                  No categories data.
+                  Kategori verisi bulunamadı.
                 </p>
               ) : (
                 analytics.topCategories.map((category) => {
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-medium">{category.name}</span>
                         <span className="text-muted-foreground font-mono">
-                          {category.count} models
+                          {category.count} model
                         </span>
                       </div>
                       <Progress value={percentage} className="h-1.5 bg-muted" />
@@ -125,7 +125,7 @@ export default function DashboardPage() {
           <Card className="flex flex-col justify-center items-center p-6 text-center">
             <CardHeader className="p-0 pb-2">
               <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                Marketplace Quality Rating
+                Pazar Yeri Kalite Puanı
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0 space-y-2">
@@ -149,7 +149,7 @@ export default function DashboardPage() {
                 })}
               </div>
               <p className="text-xs text-muted-foreground">
-                Average score across all model ratings.
+                Tüm model değerlendirmelerinin ortalama puanı.
               </p>
             </CardContent>
           </Card>
@@ -159,8 +159,8 @@ export default function DashboardPage() {
         <div className="md:col-span-1">
           <Card className="h-full flex flex-col">
             <CardHeader>
-              <CardTitle className="text-base">Recent Uploads</CardTitle>
-              <CardDescription>Latest models published or versioned.</CardDescription>
+              <CardTitle className="text-base">Son Yüklemeler</CardTitle>
+              <CardDescription>En son yayımlanan veya güncellenen modeller.</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 space-y-4">
               {isLoading ? (
@@ -173,7 +173,7 @@ export default function DashboardPage() {
                   ))}
                 </div>
               ) : !analytics?.recentUploads || analytics.recentUploads.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">No recent uploads.</p>
+                <p className="text-sm text-muted-foreground text-center py-6">Henüz yükleme yok.</p>
               ) : (
                 <div className="space-y-4">
                   {analytics.recentUploads.map((upload, idx) => (
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                         </span>
                       </div>
                       <div className="flex justify-between text-2xs text-muted-foreground">
-                        <span>by {upload.creator}</span>
+                        <span>Yazan: {upload.creator}</span>
                         <span>{new Date(upload.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>

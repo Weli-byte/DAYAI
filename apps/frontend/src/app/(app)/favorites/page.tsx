@@ -24,10 +24,10 @@ export default function FavoritesPage() {
         modelId,
         walletAddress: address,
       });
-      toast.success('Removed from favorites');
+      toast.success('Favorilerden kaldırıldı');
       refetch();
     } catch {
-      toast.error('Failed to remove from favorites');
+      toast.error('Favorilerden kaldırılamadı');
     }
   };
 
@@ -37,9 +37,9 @@ export default function FavoritesPage() {
       <div className="flex items-center gap-3">
         <Heart className="h-6 w-6 text-red-500 fill-current" />
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">My Favorites</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Favorilerim</h1>
           <p className="text-sm text-muted-foreground">
-            AI models you have bookmarked or favorited
+            Yer işareti koyduğunuz veya favorilediğiniz YZ modelleri
           </p>
         </div>
       </div>
@@ -50,9 +50,9 @@ export default function FavoritesPage() {
             <div className="h-12 w-12 rounded-full bg-amber-500/10 flex items-center justify-center mx-auto text-amber-500">
               <ShieldAlert className="h-6 w-6" />
             </div>
-            <h3 className="font-bold text-lg">Wallet Disconnected</h3>
+            <h3 className="font-bold text-lg">Cüzdan Bağlı Değil</h3>
             <p className="text-sm text-muted-foreground">
-              Please connect your cüzdan (Web3 Wallet) to load your bookmarks and favorites.
+              Yer işaretlerinizi ve favorilerinizi yüklemek için Web3 cüzdanınızı bağlayın.
             </p>
           </CardContent>
         </Card>
@@ -94,10 +94,10 @@ export default function FavoritesPage() {
                 disabled={page === 1}
                 onClick={() => setPage((p) => p - 1)}
               >
-                Previous
+                Önceki
               </Button>
               <span className="text-xs self-center text-muted-foreground">
-                Page {page} of {favoritesData.totalPages}
+                Sayfa {page} / {favoritesData.totalPages}
               </span>
               <Button
                 variant="outline"
@@ -105,7 +105,7 @@ export default function FavoritesPage() {
                 disabled={page === favoritesData.totalPages}
                 onClick={() => setPage((p) => p + 1)}
               >
-                Next
+                Sonraki
               </Button>
             </div>
           )}
@@ -116,10 +116,9 @@ export default function FavoritesPage() {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto text-primary">
               <Package className="h-6 w-6" />
             </div>
-            <h3 className="font-bold text-lg">No favorites yet</h3>
+            <h3 className="font-bold text-lg">Henüz favori yok</h3>
             <p className="text-sm text-muted-foreground">
-              You haven't bookmarked any models yet. Head over to the Marketplace to discover
-              models!
+              Henüz hiç model favorilemediniz. Modelleri keşfetmek için Pazar Yerine gidin!
             </p>
           </CardContent>
         </Card>

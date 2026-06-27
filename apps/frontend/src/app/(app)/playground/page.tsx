@@ -14,10 +14,10 @@ export default function DedicatedPlaygroundPage() {
       <div>
         <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
           <Brain className="h-6 w-6 text-primary" />
-          Playground History
+          Deneme Alanı Geçmişi
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          View your recent AI model executions and generation history.
+          Son YZ modeli çalıştırmalarınızı ve üretim geçmişinizi görüntüleyin.
         </p>
       </div>
 
@@ -28,9 +28,9 @@ export default function DedicatedPlaygroundPage() {
               <Wallet className="h-6 w-6 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="space-y-1">
-              <h3 className="font-semibold text-lg">Wallet Connection Required</h3>
+              <h3 className="font-semibold text-lg">Cüzdan Bağlantısı Gerekli</h3>
               <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                Connect your MetaMask wallet to view your personal AI playground history.
+                Kişisel YZ deneme alanı geçmişinizi görüntülemek için MetaMask cüzdanınızı bağlayın.
               </p>
             </div>
             <ConnectWalletButton />

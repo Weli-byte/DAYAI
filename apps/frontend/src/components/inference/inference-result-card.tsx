@@ -19,10 +19,10 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
     try {
       await navigator.clipboard.writeText(result.output);
       setCopied(true);
-      toast.success('Copied output to clipboard');
+      toast.success('Çıktı panoya kopyalandı');
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error('Failed to copy text');
+      toast.error('Metin kopyalanamadı');
     }
   };
 
@@ -50,12 +50,12 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-500" />
-                  Copied
+                  Kopyalandı
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" />
-                  Copy
+                  Kopyala
                 </>
               )}
             </Button>
@@ -65,7 +65,7 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
         {/* Output text */}
         <div className="min-h-[100px] whitespace-pre-wrap font-mono text-sm leading-relaxed text-foreground select-text break-words">
           {result.output || (
-            <span className="text-muted-foreground italic">No output text generated</span>
+            <span className="text-muted-foreground italic">Çıktı metni üretilmedi</span>
           )}
         </div>
 
@@ -75,7 +75,7 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
             <div className="flex items-center gap-1">
               <Cpu className="h-3.5 w-3.5 text-emerald-500" />
               <span>
-                Tokens: <strong className="text-foreground">{result.tokensUsed}</strong>
+                Token: <strong className="text-foreground">{result.tokensUsed}</strong>
               </span>
             </div>
           )}
@@ -83,14 +83,14 @@ export function InferenceResultCard({ result }: InferenceResultCardProps) {
             <div className="flex items-center gap-1">
               <Clock className="h-3.5 w-3.5 text-emerald-500" />
               <span>
-                Time: <strong className="text-foreground">{result.inferenceTimeMs}ms</strong>
+                Süre: <strong className="text-foreground">{result.inferenceTimeMs}ms</strong>
               </span>
             </div>
           )}
           {tokensPerSec && (
             <div className="flex items-center gap-1 border-l border-emerald-500/10 pl-6">
               <span>
-                Speed: <strong className="text-foreground">{tokensPerSec} t/s</strong>
+                Hız: <strong className="text-foreground">{tokensPerSec} t/s</strong>
               </span>
             </div>
           )}

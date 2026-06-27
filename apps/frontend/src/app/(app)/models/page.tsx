@@ -24,23 +24,23 @@ export default function ModelsPage() {
         <div className="flex items-center gap-3">
           <Brain className="h-6 w-6 text-primary" />
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">My Models</h1>
+            <h1 className="text-2xl font-bold tracking-tight">Modellerim</h1>
             <p className="text-sm text-muted-foreground">
-              Manage your published AI models and NFT listings
+              Yayımladığınız YZ modellerini ve NFT listelerinizi yönetin
             </p>
           </div>
         </div>
         <Button asChild>
           <Link href={ROUTES.UPLOAD}>
             <Plus className="mr-2 h-4 w-4" />
-            Upload Model
+            Model Yükle
           </Link>
         </Button>
       </div>
 
       {/* Stats row */}
       <div className="grid gap-4 sm:grid-cols-3">
-        {['Published Models', 'Total Sales', 'Contributors'].map((label) => (
+        {['Yayımlanan Modeller', 'Toplam Satış', 'Katkıda Bulunanlar'].map((label) => (
           <Card key={label}>
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
@@ -60,13 +60,13 @@ export default function ModelsPage() {
       ) : (
         <EmptyState
           icon={Brain}
-          title="No models yet"
-          description="You haven't published any AI models. Upload your first model to start earning rewards."
+          title="Henüz model yok"
+          description="Hiç YZ modeli yayımlamadınız. Ödül kazanmaya başlamak için ilk modelinizi yükleyin."
           action={
             <Button asChild>
               <Link href={ROUTES.UPLOAD}>
                 <Upload className="mr-2 h-4 w-4" />
-                Upload Your First Model
+                İlk Modelinizi Yükleyin
               </Link>
             </Button>
           }

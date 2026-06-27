@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Playground } from './playground';
+import type { InferenceResultDto } from '@/types/inference';
 
 // Mock the wallet store
 const mockWalletStore = {
@@ -20,7 +21,7 @@ const mockRunInferenceHook = {
   isPending: false,
   isError: false,
   error: null,
-  data: null,
+  data: null as InferenceResultDto | null,
 };
 
 jest.mock('@/hooks/use-inference', () => ({

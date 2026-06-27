@@ -19,9 +19,9 @@ export default function ProfilePage() {
       <div className="flex items-center gap-3">
         <User className="h-6 w-6 text-primary" />
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Profile</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Profil</h1>
           <p className="text-sm text-muted-foreground">
-            Your marketplace identity and on-chain activity
+            Pazar yeri kimliğiniz ve zincir üstü aktiviteniz
           </p>
         </div>
       </div>
@@ -38,14 +38,14 @@ export default function ProfilePage() {
                 <Skeleton className="mx-auto h-6 w-32 sm:mx-0" />
                 <Badge variant="outline" className="mx-auto w-fit sm:mx-0">
                   <Wallet className="mr-1 h-3 w-3" />
-                  Wallet not connected
+                  Cüzdan bağlı değil
                 </Badge>
               </div>
               <Skeleton className="mx-auto mt-2 h-4 w-48 sm:mx-0" />
               <div className="mt-3 flex flex-wrap justify-center gap-4 sm:justify-start">
                 {[
-                  { icon: Star, label: 'Reputation' },
-                  { icon: Award, label: 'Contributions' },
+                  { icon: Star, label: 'İtibar' },
+                  { icon: Award, label: 'Katkılar' },
                 ].map(({ icon: Icon, label }) => (
                   <div
                     key={label}
@@ -65,9 +65,9 @@ export default function ProfilePage() {
       {/* Activity tabs */}
       <Tabs defaultValue="models">
         <TabsList>
-          <TabsTrigger value="models">My Models</TabsTrigger>
-          <TabsTrigger value="contributions">Contributions</TabsTrigger>
-          <TabsTrigger value="purchases">Purchases</TabsTrigger>
+          <TabsTrigger value="models">Modellerim</TabsTrigger>
+          <TabsTrigger value="contributions">Katkılarım</TabsTrigger>
+          <TabsTrigger value="purchases">Satın Alımlarım</TabsTrigger>
         </TabsList>
         <TabsContent value="models" className="mt-4">
           <div className="space-y-3">

@@ -14,22 +14,22 @@ export default function NotFound() {
 
       <div className="relative flex flex-col items-center gap-4">
         <p className="text-8xl font-bold text-gradient">404</p>
-        <h1 className="text-2xl font-semibold tracking-tight">Page not found</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Sayfa bulunamadı</h1>
         <p className="max-w-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          Aradığınız sayfa mevcut değil veya taşınmış olabilir.
         </p>
 
         <div className="mt-2 flex gap-3">
           <Button asChild>
             <Link href={ROUTES.HOME}>
               <Home className="mr-2 h-4 w-4" />
-              Go Home
+              Ana Sayfaya Dön
             </Link>
           </Button>
           <Button variant="outline" asChild>
             <Link href={ROUTES.MARKETPLACE}>
               <Search className="mr-2 h-4 w-4" />
-              Browse Marketplace
+              Pazarı Keşfet
             </Link>
           </Button>
         </div>

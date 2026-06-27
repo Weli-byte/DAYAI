@@ -13,26 +13,26 @@ export const metadata: Metadata = {
 const settingSections = [
   {
     icon: Palette,
-    title: 'Appearance',
-    description: 'Customize theme, language, and display preferences.',
-    badge: 'Available',
+    title: 'Görünüm',
+    description: 'Tema, dil ve görüntüleme tercihlerini özelleştirin.',
+    badge: 'Mevcut',
   },
   {
     icon: Bell,
-    title: 'Notifications',
-    description: 'Configure alerts for model purchases, contributions, and DAO votes.',
+    title: 'Bildirimler',
+    description: 'Model satın alımları, katkılar ve DAO oyları için uyarıları yapılandırın.',
     badge: 'Sprint 3',
   },
   {
     icon: Wallet,
-    title: 'Wallet & Security',
-    description: 'Manage connected wallets and transaction signing preferences.',
+    title: 'Cüzdan & Güvenlik',
+    description: 'Bağlı cüzdanları ve işlem imzalama tercihlerini yönetin.',
     badge: 'Sprint 5',
   },
   {
     icon: Shield,
-    title: 'Privacy',
-    description: 'Control what on-chain activity is visible on your public profile.',
+    title: 'Gizlilik',
+    description: 'Genel profilinizde hangi zincir üstü aktivitenin görüneceğini kontrol edin.',
     badge: 'Sprint 5',
   },
 ];
@@ -44,9 +44,9 @@ export default function SettingsPage() {
       <div className="flex items-center gap-3">
         <Settings className="h-6 w-6 text-primary" />
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Ayarlar</h1>
           <p className="text-sm text-muted-foreground">
-            Manage your preferences and account configuration
+            Tercihlerinizi ve hesap yapılandırmanızı yönetin
           </p>
         </div>
       </div>

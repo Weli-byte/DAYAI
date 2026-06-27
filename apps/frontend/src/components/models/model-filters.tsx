@@ -23,17 +23,17 @@ const FRAMEWORKS: { value: Framework; label: string }[] = [
 ];
 
 const STATUSES: { value: ModelStatus; label: string }[] = [
-  { value: 'PUBLISHED', label: 'Published' },
-  { value: 'DRAFT', label: 'Draft' },
-  { value: 'ARCHIVED', label: 'Archived' },
+  { value: 'PUBLISHED', label: 'Yayımlandı' },
+  { value: 'DRAFT', label: 'Taslak' },
+  { value: 'ARCHIVED', label: 'Arşivlendi' },
 ];
 
 const SORT_OPTIONS = [
-  { value: 'createdAt:desc', label: 'Newest first' },
-  { value: 'createdAt:asc', label: 'Oldest first' },
-  { value: 'title:asc', label: 'Name A→Z' },
-  { value: 'title:desc', label: 'Name Z→A' },
-  { value: 'updatedAt:desc', label: 'Recently updated' },
+  { value: 'createdAt:desc', label: 'En yeniler önce' },
+  { value: 'createdAt:asc', label: 'En eskiler önce' },
+  { value: 'title:asc', label: 'İsim A→Z' },
+  { value: 'title:desc', label: 'İsim Z→A' },
+  { value: 'updatedAt:desc', label: 'Son güncellenen' },
 ];
 
 interface ModelFiltersProps {
@@ -88,7 +88,7 @@ export function ModelFilters({ params, categories, onChange }: ModelFiltersProps
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search models by name or description…"
+            placeholder="İsme veya açıklamaya göre model ara…"
             className="pl-9"
             value={params.search ?? ''}
             onChange={handleSearch}
@@ -97,7 +97,7 @@ export function ModelFilters({ params, categories, onChange }: ModelFiltersProps
         {hasActiveFilters && (
           <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-xs">
             <X className="h-3.5 w-3.5" />
-            Clear
+            Temizle
           </Button>
         )}
       </div>
@@ -110,7 +110,7 @@ export function ModelFilters({ params, categories, onChange }: ModelFiltersProps
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="_all">All Categories</SelectItem>
+            <SelectItem value="_all">Tüm Kategoriler</SelectItem>
             {categories.map((c) => (
               <SelectItem key={c.id} value={c.id}>
                 {c.name}
@@ -125,7 +125,7 @@ export function ModelFilters({ params, categories, onChange }: ModelFiltersProps
             <SelectValue placeholder="Framework" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="_all">All Frameworks</SelectItem>
+            <SelectItem value="_all">Tüm Çerçeveler</SelectItem>
             {FRAMEWORKS.map((f) => (
               <SelectItem key={f.value} value={f.value}>
                 {f.label}
@@ -140,7 +140,7 @@ export function ModelFilters({ params, categories, onChange }: ModelFiltersProps
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="_all">All Status</SelectItem>
+            <SelectItem value="_all">Tüm Durumlar</SelectItem>
             {STATUSES.map((s) => (
               <SelectItem key={s.value} value={s.value}>
                 {s.label}

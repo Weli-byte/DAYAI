@@ -39,7 +39,7 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
       <div className="space-y-4">
         <h3 className="text-sm font-semibold flex items-center gap-1.5 text-muted-foreground pl-1">
           <Clock className="h-4 w-4" />
-          Recent Activity
+          Son Aktivite
         </h3>
         {[...Array(3)].map((_, i) => (
           <Card key={i} className="border-border/50">
@@ -60,9 +60,9 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
     return (
       <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-4 text-center">
         <AlertTriangle className="mx-auto h-8 w-8 text-destructive mb-2" />
-        <h4 className="text-sm font-bold text-destructive">Failed to Load History</h4>
+        <h4 className="text-sm font-bold text-destructive">Geçmiş Yüklenemedi</h4>
         <p className="text-xs text-muted-foreground mt-1">
-          {error instanceof Error ? error.message : 'An error occurred fetching history'}
+          {error instanceof Error ? error.message : 'Geçmiş alınırken bir hata oluştu'}
         </p>
       </div>
     );
@@ -76,9 +76,9 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
     return (
       <div className="rounded-lg border border-dashed p-8 text-center bg-muted/10">
         <Clock className="mx-auto h-8 w-8 text-muted-foreground/50 mb-3" />
-        <h4 className="text-sm font-semibold">No recent activity</h4>
+        <h4 className="text-sm font-semibold">Son aktivite yok</h4>
         <p className="text-xs text-muted-foreground mt-1">
-          Run this model in the playground to see your inference history here.
+          Çıkarım geçmişinizi görmek için deneme alanında bu modeli çalıştırın.
         </p>
       </div>
     );
@@ -89,7 +89,7 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
       <div className="flex items-center justify-between pl-1">
         <h3 className="text-sm font-semibold flex items-center gap-1.5 text-muted-foreground">
           <Clock className="h-4 w-4" />
-          Recent Activity ({total})
+          Son Aktivite ({total})
         </h3>
       </div>
 
@@ -162,7 +162,7 @@ export function InferenceHistory({ walletAddress, modelId }: InferenceHistoryPro
       {totalPages > 1 && (
         <div className="flex items-center justify-between pt-2">
           <span className="text-xs text-muted-foreground">
-            Page {page} of {totalPages}
+            Sayfa {page} / {totalPages}
           </span>
           <div className="flex items-center gap-1">
             <Button
