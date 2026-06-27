@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -58,7 +58,7 @@ type FormValues = z.infer<typeof schema>;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function UploadModelPage() {
+function UploadModelForm() {
   const searchParams = useSearchParams();
   const defaultModelId = searchParams.get('modelId') ?? '';
 
@@ -430,5 +430,20 @@ function InfoRow({
         )}
       </div>
     </div>
+  );
+}
+
+export default function UploadModelPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="mx-auto max-w-2xl pt-12 text-center text-muted-foreground space-y-3">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
+          <p className="text-sm">Loading upload page details...</p>
+        </div>
+      }
+    >
+      <UploadModelForm />
+    </Suspense>
   );
 }

@@ -57,7 +57,12 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  models AIModel[]
+  models          AIModel[]
+  profile         UserProfile?
+  reviews         Review[]
+  ratings         Rating[]
+  favorites       Favorite[]
+  analyticsEvents AnalyticsEvent[]
 
   @@index([email])
   @@index([deletedAt])
@@ -107,11 +112,15 @@ model AIModel {
   updatedAt   DateTime    @updatedAt
   deletedAt   DateTime?
 
-  owner    User          @relation(fields: [ownerId], references: [id])
-  category Category?     @relation(fields: [categoryId], references: [id])
-  tags     AIModelTag[]
-  versions ModelVersion[]
+  owner         User             @relation(fields: [ownerId], references: [id])
+  category      Category?        @relation(fields: [categoryId], references: [id])
+  tags          AIModelTag[]
+  versions      ModelVersion[]
   inferenceLogs InferenceLog[]
+  reviews       Review[]
+  ratings       Rating[]
+  favorites     Favorite[]
+  analyticsEvents AnalyticsEvent[]
 
   @@index([ownerId])
   @@index([categoryId])
@@ -220,4 +229,78 @@ model InferenceLog {
   @@index([modelId])
   @@index([createdAt])
   @@map("inference_logs")
+}
+
+model UserProfile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName      String?  @db.VarChar(100)
+  website       String?  @db.VarChar(200)
+  twitter       String?  @db.VarChar(100)
+  github        String?  @db.VarChar(100)
+  walletAddress String?  @unique @db.VarChar(42)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  modelId   String
+  model     AIModel  @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([modelId])
+  @@index([userId])
+  @@map("reviews")
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  modelId   String
+  model     AIModel  @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  value     Int      @db.Integer
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([modelId, userId])
+  @@index([modelId])
+  @@index([userId])
+  @@map("ratings")
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  modelId   String
+  model     AIModel  @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([modelId, userId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  eventType String   @db.VarChar(50)
+  modelId   String?
+  model     AIModel? @relation(fields: [modelId], references: [id], onDelete: SetNull)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([modelId])
+  @@index([createdAt])
+  @@map("analytics_events")
 }

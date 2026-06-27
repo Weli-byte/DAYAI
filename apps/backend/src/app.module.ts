@@ -8,6 +8,11 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { InferenceModule } from './modules/inference/inference.module';
+import { ProfilesModule } from './modules/profiles/profiles.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
+import { RatingsModule } from './modules/ratings/ratings.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { RequestIdMiddleware } from './modules/common/middleware/request-id.middleware';
 import { appConfig } from './modules/config/app.config';
 import { databaseConfig } from './modules/config/database.config';
@@ -34,6 +39,11 @@ import { redisConfig } from './modules/config/redis.config';
     TagsModule,
     UploadModule,
     InferenceModule,
+    ProfilesModule,
+    ReviewsModule,
+    RatingsModule,
+    FavoritesModule,
+    AnalyticsModule,
   ],
 })
 export class AppModule implements NestModule {

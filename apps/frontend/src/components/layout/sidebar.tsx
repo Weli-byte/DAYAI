@@ -13,6 +13,7 @@ import {
   X,
   ChevronRight,
   Play,
+  Heart,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -27,6 +28,7 @@ const navItems = [
   { href: ROUTES.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
   { href: ROUTES.MARKETPLACE, label: 'Marketplace', icon: Store },
   { href: ROUTES.PLAYGROUND, label: 'Playground', icon: Play },
+  { href: ROUTES.FAVORITES, label: 'Favorites', icon: Heart },
   { href: ROUTES.MODELS, label: 'My Models', icon: Package },
   { href: ROUTES.MODEL_CREATE, label: 'Publish Model', icon: Upload },
 ];

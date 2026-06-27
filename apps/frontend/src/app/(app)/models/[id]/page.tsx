@@ -10,13 +10,11 @@ import {
   User,
   GitBranch,
   FileText,
-  ExternalLink,
   Pencil,
   Trash2,
-  Hash,
-  Link2,
   Upload,
-  Database,
+  Star,
+  Heart,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -30,6 +28,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ErrorState } from '@/components/common/error-state';
 import { useModel, useDeleteModel } from '@/hooks/use-models';
 import { Playground } from '@/components/inference';
+import { ReviewsSection, SimilarModels, BlockchainInfoCards } from '@/components/trust';
+import {
+  useRatingSummary,
+  useIsFavorite,
+  useAddFavorite,
+  useRemoveFavorite,
+  useReviews,
+} from '@/hooks/use-trust';
+import { useWalletStore } from '@/store/wallet.store';
+import { cn } from '@/lib/utils';
 import { ROUTES } from '@/constants/routes';
 import type { Framework, ModelStatus } from '@/types/model';
 
@@ -57,6 +65,41 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
   const router = useRouter();
   const { data: model, isLoading, isError, error } = useModel(id);
   const deleteMutation = useDeleteModel();
+
+  const { address, isConnected } = useWalletStore();
+  const { data: ratingSummary } = useRatingSummary(id);
+  const { data: reviewsData } = useReviews(id, 1, 1);
+  const { data: favStatus } = useIsFavorite(id, address || '');
+
+  const addFavoriteMutation = useAddFavorite();
+  const removeFavoriteMutation = useRemoveFavorite();
+
+  const isFavorite = favStatus?.isFavorite || false;
+
+  const handleFavoriteToggle = async () => {
+    if (!isConnected || !address) {
+      toast.error('Connect your wallet to bookmark this model');
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        await removeFavoriteMutation.mutateAsync({
+          modelId: id,
+          walletAddress: address,
+        });
+        toast.success('Removed from favorites');
+      } else {
+        await addFavoriteMutation.mutateAsync({
+          modelId: id,
+          walletAddress: address,
+        });
+        toast.success('Added to favorites');
+      }
+    } catch {
+      toast.error('Failed to update favorites');
+    }
+  };
 
   async function handleDelete() {
     if (!confirm('Are you sure you want to delete this model?')) return;
@@ -110,12 +153,37 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                   </Badge>
                 )}
               </div>
-              <h1 className="text-3xl font-bold tracking-tight">{model.title}</h1>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl font-bold tracking-tight">{model.title}</h1>
+                {ratingSummary && ratingSummary.count > 0 && (
+                  <div className="flex items-center gap-1 text-xs bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 px-2 py-0.5 rounded-full font-semibold shrink-0">
+                    <Star className="h-3 w-3 fill-current text-yellow-500" />
+                    <span>
+                      {ratingSummary.average.toFixed(1)} ({ratingSummary.count} votes)
+                    </span>
+                  </div>
+                )}
+              </div>
               {model.description && (
                 <p className="max-w-2xl text-muted-foreground">{model.description}</p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                variant="outline"
+                size="sm"
+                className={cn(
+                  'gap-1.5 transition-colors',
+                  isFavorite
+                    ? 'border-red-200 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 dark:bg-red-950/20 dark:border-red-900/50'
+                    : 'hover:text-red-500',
+                )}
+                onClick={handleFavoriteToggle}
+                disabled={addFavoriteMutation.isPending || removeFavoriteMutation.isPending}
+              >
+                <Heart className={cn('h-3.5 w-3.5', isFavorite && 'fill-current text-red-500')} />
+                {isFavorite ? 'Favorited' : 'Favorite'}
+              </Button>
               <Button variant="outline" size="sm" className="gap-1" asChild>
                 <Link href={`/models/${id}/edit`}>
                   <Pencil className="h-3.5 w-3.5" />
@@ -154,6 +222,12 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                     Playground
                   </TabsTrigger>
                 )}
+                <TabsTrigger
+                  value="reviews"
+                  className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
+                >
+                  Reviews ({reviewsData?.total || 0})
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -213,85 +287,23 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                   )}
 
                   {/* Blockchain Info */}
-                  {model.latestVersion?.nftTokenId && (
-                    <Card>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                          <Database className="h-4 w-4" /> On-Chain Data
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3 text-sm">
-                        {/* NFT Token ID */}
-                        <div className="flex items-start gap-2">
-                          <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                          <div>
-                            <p className="text-xs text-muted-foreground">NFT Token ID</p>
-                            <p className="font-mono font-medium">
-                              #{model.latestVersion.nftTokenId}
-                            </p>
-                          </div>
-                        </div>
-                        {/* Transaction Hash */}
-                        {model.latestVersion.txHash && (
-                          <div className="flex items-start gap-2">
-                            <ExternalLink className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                            <div className="min-w-0">
-                              <p className="text-xs text-muted-foreground">Transaction</p>
-                              <a
-                                href={`https://monad-testnet.socialscan.io/tx/${model.latestVersion.txHash}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-mono text-xs text-primary hover:underline break-all"
-                              >
-                                {model.latestVersion.txHash}
-                              </a>
-                            </div>
-                          </div>
-                        )}
-                        {/* File CID */}
-                        {model.latestVersion.fileCid && (
-                          <div className="flex items-start gap-2">
-                            <Link2 className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                            <div className="min-w-0">
-                              <p className="text-xs text-muted-foreground">IPFS File CID</p>
-                              <a
-                                href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs'}/${model.latestVersion.fileCid}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-mono text-xs text-primary hover:underline break-all"
-                              >
-                                {model.latestVersion.fileCid}
-                              </a>
-                            </div>
-                          </div>
-                        )}
-                        {/* Owner Address */}
-                        {model.latestVersion.ownerAddress && (
-                          <div className="flex items-start gap-2">
-                            <User className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                            <div className="min-w-0">
-                              <p className="text-xs text-muted-foreground">Owner Address</p>
-                              <p className="font-mono text-xs break-all">
-                                {model.latestVersion.ownerAddress}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                        {/* SHA256 */}
-                        {model.latestVersion.sha256 && (
-                          <div className="flex items-start gap-2">
-                            <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                            <div className="min-w-0">
-                              <p className="text-xs text-muted-foreground">SHA-256</p>
-                              <p className="font-mono text-xs break-all text-muted-foreground">
-                                {model.latestVersion.sha256}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  )}
+                  <div className="space-y-3">
+                    <h3 className="text-base font-semibold">On-Chain Asset Details</h3>
+                    <BlockchainInfoCards
+                      nftTokenId={model.latestVersion?.nftTokenId}
+                      fileCid={model.latestVersion?.fileCid}
+                      txHash={model.latestVersion?.txHash}
+                      ownerAddress={model.latestVersion?.ownerAddress}
+                    />
+                  </div>
+
+                  <Separator />
+
+                  {/* Similar Models */}
+                  <div className="space-y-4 pt-2">
+                    <h3 className="text-base font-semibold">Similar Models</h3>
+                    <SimilarModels categoryId={model.category?.id} currentModelId={model.id} />
+                  </div>
                 </div>
 
                 {/* Sidebar */}
@@ -306,7 +318,12 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                           </div>
                           <div>
                             <p className="text-xs text-muted-foreground">Owner</p>
-                            <p className="text-sm font-medium">{model.owner.username}</p>
+                            <Link
+                              href={`/profiles/${model.owner.id}`}
+                              className="text-sm font-semibold hover:text-primary transition-colors hover:underline"
+                            >
+                              {model.owner.username}
+                            </Link>
                           </div>
                         </div>
                       )}
@@ -396,6 +413,9 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                 </div>
               </TabsContent>
             )}
+            <TabsContent value="reviews" className="mt-0 border-none p-0">
+              <ReviewsSection modelId={model.id} />
+            </TabsContent>
           </Tabs>
         </>
       ) : null}
