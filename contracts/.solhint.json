@@ -2,10 +2,7 @@
   "extends": "solhint:recommended",
   "plugins": [],
   "rules": {
-    // ── Compiler ──────────────────────────────────────────────────────────
     "compiler-version": ["error", "^0.8.24"],
-
-    // ── Security ──────────────────────────────────────────────────────────
     "avoid-call-value": "error",
     "avoid-suicide": "error",
     "avoid-throw": "error",
@@ -15,16 +12,12 @@
     "avoid-low-level-calls": "warn",
     "no-inline-assembly": "warn",
     "multiple-sends": "warn",
-
-    // ── Style ─────────────────────────────────────────────────────────────
     "max-line-length": ["warn", 120],
     "ordering": "warn",
     "func-visibility": ["warn", { "ignoreConstructors": true }],
     "no-unused-vars": "error",
     "var-name-mixedcase": "error",
     "func-name-mixedcase": "error",
-
-    // ── NatSpec documentation (enforced for public/external) ──────────────
     "func-named-parameters": "warn"
   }
 }

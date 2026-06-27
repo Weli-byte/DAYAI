@@ -111,6 +111,7 @@ model AIModel {
   category Category?     @relation(fields: [categoryId], references: [id])
   tags     AIModelTag[]
   versions ModelVersion[]
+  inferenceLogs InferenceLog[]
 
   @@index([ownerId])
   @@index([categoryId])
@@ -192,4 +193,31 @@ model AIModelTag {
 
   @@id([modelId, tagId])
   @@map("ai_model_tags")
+}
+
+enum InferenceStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model InferenceLog {
+  id              String          @id @default(cuid())
+  modelId         String
+  model           AIModel         @relation(fields: [modelId], references: [id])
+  walletAddress   String          @db.VarChar(42)
+  prompt          String          @db.Text
+  output          String?         @db.Text
+  status          InferenceStatus @default(PENDING)
+  tokensUsed      Int?
+  inferenceTimeMs Int?
+  errorMessage    String?         @db.Text
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([walletAddress])
+  @@index([modelId])
+  @@index([createdAt])
+  @@map("inference_logs")
 }

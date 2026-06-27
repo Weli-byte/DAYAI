@@ -26,8 +26,10 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ErrorState } from '@/components/common/error-state';
 import { useModel, useDeleteModel } from '@/hooks/use-models';
+import { Playground } from '@/components/inference';
 import { ROUTES } from '@/constants/routes';
 import type { Framework, ModelStatus } from '@/types/model';
 
@@ -135,198 +137,266 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
 
           <Separator />
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Main info */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Tags */}
-              {model.tags.length > 0 && (
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                      <Tag className="h-4 w-4" /> Tags
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {model.tags.map((tag) => (
-                        <span
-                          key={tag.id}
-                          className="rounded-full bg-muted px-3 py-1 text-sm text-muted-foreground"
-                        >
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Versions */}
-              {model.latestVersion && (
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                      <GitBranch className="h-4 w-4" /> Latest Version
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Badge>v{model.latestVersion.version}</Badge>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(model.latestVersion.createdAt).toLocaleDateString('en-US', {
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </span>
-                    </div>
-                    {model.latestVersion.changelog && (
-                      <p className="text-sm text-muted-foreground">
-                        {model.latestVersion.changelog}
-                      </p>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Blockchain Info */}
-              {model.latestVersion?.nftTokenId && (
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                      <Database className="h-4 w-4" /> On-Chain Data
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm">
-                    {/* NFT Token ID */}
-                    <div className="flex items-start gap-2">
-                      <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">NFT Token ID</p>
-                        <p className="font-mono font-medium">#{model.latestVersion.nftTokenId}</p>
-                      </div>
-                    </div>
-                    {/* Transaction Hash */}
-                    {model.latestVersion.txHash && (
-                      <div className="flex items-start gap-2">
-                        <ExternalLink className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <p className="text-xs text-muted-foreground">Transaction</p>
-                          <a
-                            href={`https://monad-testnet.socialscan.io/tx/${model.latestVersion.txHash}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-xs text-primary hover:underline break-all"
-                          >
-                            {model.latestVersion.txHash}
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                    {/* File CID */}
-                    {model.latestVersion.fileCid && (
-                      <div className="flex items-start gap-2">
-                        <Link2 className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <p className="text-xs text-muted-foreground">IPFS File CID</p>
-                          <a
-                            href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs'}/${model.latestVersion.fileCid}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-mono text-xs text-primary hover:underline break-all"
-                          >
-                            {model.latestVersion.fileCid}
-                          </a>
-                        </div>
-                      </div>
-                    )}
-                    {/* Owner Address */}
-                    {model.latestVersion.ownerAddress && (
-                      <div className="flex items-start gap-2">
-                        <User className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <p className="text-xs text-muted-foreground">Owner Address</p>
-                          <p className="font-mono text-xs break-all">
-                            {model.latestVersion.ownerAddress}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                    {/* SHA256 */}
-                    {model.latestVersion.sha256 && (
-                      <div className="flex items-start gap-2">
-                        <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                        <div className="min-w-0">
-                          <p className="text-xs text-muted-foreground">SHA-256</p>
-                          <p className="font-mono text-xs break-all text-muted-foreground">
-                            {model.latestVersion.sha256}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
+          <Tabs defaultValue="overview" className="space-y-6">
+            <div className="border-b pb-px">
+              <TabsList className="bg-transparent border-b rounded-none h-auto p-0 gap-6">
+                <TabsTrigger
+                  value="overview"
+                  className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
+                >
+                  Overview
+                </TabsTrigger>
+                {model.status === 'PUBLISHED' && (
+                  <TabsTrigger
+                    value="playground"
+                    className="bg-transparent border-b-2 border-transparent rounded-none px-0 pb-3 pt-2 font-semibold text-muted-foreground data-[state=active]:border-primary data-[state=active]:text-foreground data-[state=active]:bg-transparent shadow-none"
+                  >
+                    Playground
+                  </TabsTrigger>
+                )}
+              </TabsList>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-4">
-              <Card>
-                <CardContent className="pt-4 space-y-4">
-                  {/* Owner */}
-                  {model.owner && (
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                        <User className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Owner</p>
-                        <p className="text-sm font-medium">{model.owner.username}</p>
-                      </div>
-                    </div>
+            <TabsContent value="overview" className="mt-0 border-none p-0">
+              <div className="grid gap-6 lg:grid-cols-3">
+                {/* Main info */}
+                <div className="lg:col-span-2 space-y-6">
+                  {/* Tags */}
+                  {model.tags.length > 0 && (
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Tag className="h-4 w-4" /> Tags
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-wrap gap-2">
+                          {model.tags.map((tag) => (
+                            <span
+                              key={tag.id}
+                              className="rounded-full bg-muted px-3 py-1 text-sm text-muted-foreground"
+                            >
+                              {tag.name}
+                            </span>
+                          ))}
+                        </div>
+                      </CardContent>
+                    </Card>
                   )}
 
-                  <Separator />
+                  {/* Versions */}
+                  {model.latestVersion && (
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <GitBranch className="h-4 w-4" /> Latest Version
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Badge>v{model.latestVersion.version}</Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(model.latestVersion.createdAt).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                        {model.latestVersion.changelog && (
+                          <p className="text-sm text-muted-foreground">
+                            {model.latestVersion.changelog}
+                          </p>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
 
-                  {/* Dates */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Calendar className="h-3.5 w-3.5" />
-                      <span>
-                        Published{' '}
-                        {new Date(model.createdAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Brain className="h-3.5 w-3.5" />
-                      <span>
-                        Updated{' '}
-                        {new Date(model.updatedAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </span>
-                    </div>
+                  {/* Blockchain Info */}
+                  {model.latestVersion?.nftTokenId && (
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                          <Database className="h-4 w-4" /> On-Chain Data
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3 text-sm">
+                        {/* NFT Token ID */}
+                        <div className="flex items-start gap-2">
+                          <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                          <div>
+                            <p className="text-xs text-muted-foreground">NFT Token ID</p>
+                            <p className="font-mono font-medium">
+                              #{model.latestVersion.nftTokenId}
+                            </p>
+                          </div>
+                        </div>
+                        {/* Transaction Hash */}
+                        {model.latestVersion.txHash && (
+                          <div className="flex items-start gap-2">
+                            <ExternalLink className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <div className="min-w-0">
+                              <p className="text-xs text-muted-foreground">Transaction</p>
+                              <a
+                                href={`https://monad-testnet.socialscan.io/tx/${model.latestVersion.txHash}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-mono text-xs text-primary hover:underline break-all"
+                              >
+                                {model.latestVersion.txHash}
+                              </a>
+                            </div>
+                          </div>
+                        )}
+                        {/* File CID */}
+                        {model.latestVersion.fileCid && (
+                          <div className="flex items-start gap-2">
+                            <Link2 className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <div className="min-w-0">
+                              <p className="text-xs text-muted-foreground">IPFS File CID</p>
+                              <a
+                                href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs'}/${model.latestVersion.fileCid}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-mono text-xs text-primary hover:underline break-all"
+                              >
+                                {model.latestVersion.fileCid}
+                              </a>
+                            </div>
+                          </div>
+                        )}
+                        {/* Owner Address */}
+                        {model.latestVersion.ownerAddress && (
+                          <div className="flex items-start gap-2">
+                            <User className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <div className="min-w-0">
+                              <p className="text-xs text-muted-foreground">Owner Address</p>
+                              <p className="font-mono text-xs break-all">
+                                {model.latestVersion.ownerAddress}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                        {/* SHA256 */}
+                        {model.latestVersion.sha256 && (
+                          <div className="flex items-start gap-2">
+                            <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <div className="min-w-0">
+                              <p className="text-xs text-muted-foreground">SHA-256</p>
+                              <p className="font-mono text-xs break-all text-muted-foreground">
+                                {model.latestVersion.sha256}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-4">
+                  <Card>
+                    <CardContent className="pt-4 space-y-4">
+                      {/* Owner */}
+                      {model.owner && (
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                            <User className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Owner</p>
+                            <p className="text-sm font-medium">{model.owner.username}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      <Separator />
+
+                      {/* Dates */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Calendar className="h-3.5 w-3.5" />
+                          <span>
+                            Published{' '}
+                            {new Date(model.createdAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Brain className="h-3.5 w-3.5" />
+                          <span>
+                            Updated{' '}
+                            {new Date(model.updatedAt).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                      </div>
+
+                      <Separator />
+
+                      {/* Upload / NFT button */}
+                      <Button size="sm" className="w-full gap-1.5" asChild>
+                        <Link href={`/models/upload?modelId=${id}`}>
+                          <Upload className="h-3.5 w-3.5" />
+                          Upload New Version
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+
+            {model.status === 'PUBLISHED' && (
+              <TabsContent value="playground" className="mt-0 border-none p-0">
+                <div className="grid gap-6 lg:grid-cols-3">
+                  <div className="lg:col-span-2">
+                    <Playground modelId={model.id} modelTitle={model.title} />
                   </div>
-
-                  <Separator />
-
-                  {/* Upload / NFT button */}
-                  <Button size="sm" className="w-full gap-1.5" asChild>
-                    <Link href={`/models/upload?modelId=${id}`}>
-                      <Upload className="h-3.5 w-3.5" />
-                      Upload New Version
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                  <div>
+                    <Card>
+                      <CardContent className="pt-4 space-y-4 text-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                            <User className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground">Owner</p>
+                            <p className="text-sm font-medium">
+                              {model.owner?.username || 'Unknown'}
+                            </p>
+                          </div>
+                        </div>
+                        <Separator />
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground">Model Framework</p>
+                          <p className="text-sm font-semibold">
+                            {FRAMEWORK_LABELS[model.framework]}
+                          </p>
+                        </div>
+                        {model.license && (
+                          <>
+                            <Separator />
+                            <div className="space-y-1">
+                              <p className="text-xs text-muted-foreground">License</p>
+                              <p className="text-sm font-semibold">{model.license}</p>
+                            </div>
+                          </>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </TabsContent>
+            )}
+          </Tabs>
         </>
       ) : null}
     </div>

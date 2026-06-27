@@ -12,6 +12,7 @@ import {
   Settings,
   X,
   ChevronRight,
+  Play,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,6 +26,7 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { href: ROUTES.DASHBOARD, label: 'Dashboard', icon: LayoutDashboard },
   { href: ROUTES.MARKETPLACE, label: 'Marketplace', icon: Store },
+  { href: ROUTES.PLAYGROUND, label: 'Playground', icon: Play },
   { href: ROUTES.MODELS, label: 'My Models', icon: Package },
   { href: ROUTES.MODEL_CREATE, label: 'Publish Model', icon: Upload },
 ];

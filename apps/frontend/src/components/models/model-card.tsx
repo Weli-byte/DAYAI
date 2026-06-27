@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Brain, Calendar, Tag, ArrowRight } from 'lucide-react';
+import { Brain, Calendar, Tag, ArrowRight, Play } from 'lucide-react';
 
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -104,12 +104,27 @@ export function ModelCard({ model }: ModelCardProps) {
               {updatedAt}
             </span>
           </div>
-          <Button size="sm" variant="ghost" className="gap-1 text-xs" asChild>
-            <Link href={detailHref}>
-              Details
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </Button>
+          <div className="flex items-center gap-1.5">
+            {model.status === 'PUBLISHED' && (
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 gap-1 text-[11px] px-2.5 font-medium border-primary/20 text-primary hover:bg-primary/5"
+                asChild
+              >
+                <Link href={`${detailHref}?tab=playground`}>
+                  <Play className="h-3 w-3 fill-current" />
+                  Run
+                </Link>
+              </Button>
+            )}
+            <Button size="sm" variant="ghost" className="h-8 gap-1 text-[11px] px-2.5" asChild>
+              <Link href={detailHref}>
+                Details
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </CardFooter>
     </Card>

@@ -17,9 +17,11 @@ from fastapi.responses import ORJSONResponse
 from app.core.config import settings
 from app.core.logging import configure_logging, get_logger
 from app.routers.health import router as health_router
+from app.routers.inference import router as inference_router
 
 configure_logging(settings.app_log_level)
 logger = get_logger(__name__)
+
 
 
 @asynccontextmanager
@@ -74,12 +76,7 @@ app.add_middleware(
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(health_router)
-
-# Sprint 5 routers:
-# from app.routers.embed  import router as embed_router
-# from app.routers.infer  import router as infer_router
-# app.include_router(embed_router,  prefix="/v1")
-# app.include_router(infer_router,  prefix="/v1")
+app.include_router(inference_router)
 
 
 @app.get("/", include_in_schema=False)
