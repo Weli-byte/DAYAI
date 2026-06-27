@@ -3,9 +3,11 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   MARKETPLACE: '/marketplace',
   MODELS: '/models',
+  MODEL_DETAIL: (id: string) => `/models/${id}`,
+  MODEL_CREATE: '/models/create',
   UPLOAD: '/upload',
   PROFILE: '/profile',
   SETTINGS: '/settings',
 } as const;
 
-export type Route = (typeof ROUTES)[keyof typeof ROUTES];
+export type StaticRoute = Extract<(typeof ROUTES)[keyof typeof ROUTES], string>;

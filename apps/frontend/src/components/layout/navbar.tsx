@@ -77,13 +77,13 @@ export function Navbar() {
       <div className="flex items-center gap-1">
         <ThemeToggle />
 
-        {/* Wallet connect placeholder — wired in Sprint 5 */}
+        {/* Wallet connect — wired in a future milestone */}
         <Button
           size="sm"
           variant="outline"
           className="ml-2 gap-2 text-xs"
           disabled
-          title="Wallet integration coming in Sprint 5"
+          title="Wallet integration coming in a future milestone"
         >
           <div className="h-2 w-2 rounded-full bg-muted-foreground" />
           Connect Wallet

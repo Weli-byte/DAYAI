@@ -1,8 +1,8 @@
 // =============================================================================
 // Prisma Schema — Decentralized AI Model Marketplace
 //
-// Sprint 1: Infrastructure only — datasource + client configured, no models yet.
-// Sprint 5+: AI Model, User, Listing, Transaction, Contribution tables.
+// Sprint 2 Milestone 1: AI Model Registry & Core Marketplace
+// Models: User, Category, Tag, AIModel, ModelVersion, AIModelTag
 //
 // Commands:
 //   pnpm prisma:migrate  → create + apply migration
@@ -13,50 +13,141 @@
 
 generator client {
   provider = "prisma-client-js"
-  // Enables type-safe query results and improves DX.
-  // Remove if Prisma Client is not used in the edge runtime.
   output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // Connection pooling via PgBouncer (Supabase, Railway, etc.)
-  // Uncomment directUrl when using a connection pooler:
+  // Uncomment when using a connection pooler (PgBouncer, Supabase, etc.):
   // directUrl = env("DATABASE_DIRECT_URL")
 }
 
 // =============================================================================
-// SPRINT 5 MODELS (preview — not yet active)
+// Enums
 // =============================================================================
-//
-// model User {
-//   id            String   @id @default(cuid())
-//   walletAddress String   @unique @db.VarChar(42)
-//   username      String?  @unique @db.VarChar(50)
-//   bio           String?  @db.Text
-//   avatarIpfs    String?  @db.VarChar(100)
-//   createdAt     DateTime @default(now())
-//   updatedAt     DateTime @updatedAt
-//   models        AIModel[]
-//
-//   @@index([walletAddress])
-//   @@map("users")
-// }
-//
-// model AIModel {
-//   id          String   @id @default(cuid())
-//   tokenId     BigInt   @unique
-//   name        String   @db.VarChar(200)
-//   description String?  @db.Text
-//   category    String   @db.VarChar(50)
-//   metadataIpfs String  @db.VarChar(100)
-//   ownerId     String
-//   owner       User     @relation(fields: [ownerId], references: [id])
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
-//
-//   @@index([ownerId])
-//   @@index([category])
-//   @@map("ai_models")
-// }
+
+enum Framework {
+  PYTORCH
+  TENSORFLOW
+  SKLEARN
+  ONNX
+  JAX
+  OTHER
+}
+
+enum ModelStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// =============================================================================
+// Models
+// =============================================================================
+
+/// Platform user — wallet address filled in a future milestone
+model User {
+  id        String    @id @default(cuid())
+  username  String    @unique @db.VarChar(50)
+  email     String?   @unique @db.VarChar(255)
+  bio       String?   @db.Text
+  avatar    String?   @db.VarChar(500)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  models AIModel[]
+
+  @@index([email])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+/// Taxonomy category for organising AI models
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  models AIModel[]
+
+  @@index([slug])
+  @@map("categories")
+}
+
+/// Free-form tag for flexible model classification
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(50)
+  slug      String   @unique @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  models AIModelTag[]
+
+  @@index([slug])
+  @@map("tags")
+}
+
+/// Core AI Model entity — the primary marketplace asset
+model AIModel {
+  id          String      @id @default(cuid())
+  title       String      @db.VarChar(200)
+  description String?     @db.Text
+  framework   Framework   @default(OTHER)
+  status      ModelStatus @default(DRAFT)
+  license     String?     @db.VarChar(100)
+  ownerId     String
+  categoryId  String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+
+  owner    User          @relation(fields: [ownerId], references: [id])
+  category Category?     @relation(fields: [categoryId], references: [id])
+  tags     AIModelTag[]
+  versions ModelVersion[]
+
+  @@index([ownerId])
+  @@index([categoryId])
+  @@index([status])
+  @@index([framework])
+  @@index([deletedAt])
+  // Full-text search index on title for fast ILIKE queries
+  @@index([title])
+  @@map("ai_models")
+}
+
+/// Immutable version snapshot of an AI Model
+model ModelVersion {
+  id        String   @id @default(cuid())
+  modelId   String
+  version   String   @db.VarChar(20)
+  changelog String?  @db.Text
+  ipfsHash  String?  @db.VarChar(100)
+  isLatest  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  model AIModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@unique([modelId, version])
+  @@index([modelId])
+  @@map("model_versions")
+}
+
+/// Many-to-many join table: AIModel ↔ Tag
+model AIModelTag {
+  modelId String
+  tagId   String
+
+  model AIModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  tag   Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([modelId, tagId])
+  @@map("ai_model_tags")
+}
