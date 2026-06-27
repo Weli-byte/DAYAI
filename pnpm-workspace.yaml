@@ -7,7 +7,8 @@
 # Docs: https://pnpm.io/workspaces
 
 packages:
-  - "apps/*"        # Next.js frontend, docs site, etc.
-  - "services/*"    # NestJS API, FastAPI wrapper
-  - "packages/*"    # Shared TypeScript libraries and configs
-  - "contracts/*"   # Hardhat / Solidity projects
+  - 'apps/*' # Next.js frontend, docs site, etc.
+  - 'services/*' # NestJS API, FastAPI wrapper
+  - 'packages/*' # Shared TypeScript libraries and configs
+  - 'contracts' # Main Hardhat / Solidity project
+  - 'contracts/*' # Future additional contract packages (if needed)

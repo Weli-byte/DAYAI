@@ -1,0 +1,40 @@
+{
+  "name": "@marketplace/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Solidity smart contracts for the Decentralized AI Marketplace on Monad blockchain.",
+  "scripts": {
+    "compile": "hardhat compile",
+    "clean": "hardhat clean && ts-node scripts/clean.ts",
+    "test": "hardhat test",
+    "test:watch": "hardhat test --watch",
+    "coverage": "hardhat coverage",
+    "deploy:local": "hardhat run scripts/deploy.ts --network hardhat",
+    "deploy:testnet": "hardhat run scripts/deploy.ts --network monad-testnet",
+    "verify": "hardhat run scripts/verify.ts --network monad-testnet",
+    "export-abi": "ts-node scripts/export-abi.ts",
+    "lint": "solhint 'contracts/**/*.sol'",
+    "lint:fix": "solhint 'contracts/**/*.sol' --fix",
+    "typecheck": "tsc --noEmit",
+    "size": "hardhat size-contracts",
+    "gas-report": "REPORT_GAS=true hardhat test"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "@openzeppelin/contracts-upgradeable": "^5.1.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.4.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^22.0.0",
+    "dotenv": "^16.4.0",
+    "hardhat": "^2.22.0",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solhint": "^5.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0",
+    "viem": "^2.21.0"
+  }
+}
