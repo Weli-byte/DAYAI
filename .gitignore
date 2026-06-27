@@ -59,7 +59,8 @@ env/
 *.pt
 *.pth
 *.onnx
-models/
+# Only ignore root-level ML model binary directory, not source code modules
+/models/
 checkpoints/
 
 # ── Solidity / Smart Contracts ────────────────────────────────────────────────

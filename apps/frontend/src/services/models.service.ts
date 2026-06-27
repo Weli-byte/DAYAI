@@ -11,6 +11,8 @@ import type {
   ModelQueryParams,
   CategoryDto,
   TagDto,
+  MintResultDto,
+  UploadJobDto,
 } from '@/types/model';
 
 function buildQuery(params: ModelQueryParams): string {
@@ -48,4 +50,25 @@ export const categoriesService = {
 
 export const tagsService = {
   list: () => apiClient.get<TagDto[]>('/tags'),
+};
+
+export const uploadService = {
+  uploadModel: (formData: FormData) => {
+    const BASE_URL = `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'}/api/v1`;
+    // Use raw fetch for multipart — apiClient uses JSON headers
+    return fetch(`${BASE_URL}/upload/model`, { method: 'POST', body: formData }).then(
+      async (res) => {
+        if (!res.ok) {
+          const err = (await res.json().catch(() => ({ message: res.statusText }))) as {
+            message?: string;
+          };
+          throw new Error(err.message ?? 'Upload failed');
+        }
+        const json = (await res.json()) as { success: boolean; data: MintResultDto };
+        return json.data;
+      },
+    );
+  },
+
+  getJobStatus: (jobId: string) => apiClient.get<UploadJobDto>(`/upload/jobs/${jobId}`),
 };

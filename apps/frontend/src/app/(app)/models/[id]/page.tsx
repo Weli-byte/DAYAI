@@ -13,6 +13,10 @@ import {
   ExternalLink,
   Pencil,
   Trash2,
+  Hash,
+  Link2,
+  Upload,
+  Database,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -165,7 +169,7 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                       <GitBranch className="h-4 w-4" /> Latest Version
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-2">
+                  <CardContent className="space-y-3">
                     <div className="flex items-center gap-2">
                       <Badge>v{model.latestVersion.version}</Badge>
                       <span className="text-xs text-muted-foreground">
@@ -180,6 +184,85 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
                       <p className="text-sm text-muted-foreground">
                         {model.latestVersion.changelog}
                       </p>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Blockchain Info */}
+              {model.latestVersion?.nftTokenId && (
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      <Database className="h-4 w-4" /> On-Chain Data
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm">
+                    {/* NFT Token ID */}
+                    <div className="flex items-start gap-2">
+                      <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">NFT Token ID</p>
+                        <p className="font-mono font-medium">#{model.latestVersion.nftTokenId}</p>
+                      </div>
+                    </div>
+                    {/* Transaction Hash */}
+                    {model.latestVersion.txHash && (
+                      <div className="flex items-start gap-2">
+                        <ExternalLink className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-xs text-muted-foreground">Transaction</p>
+                          <a
+                            href={`https://monad-testnet.socialscan.io/tx/${model.latestVersion.txHash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-xs text-primary hover:underline break-all"
+                          >
+                            {model.latestVersion.txHash}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                    {/* File CID */}
+                    {model.latestVersion.fileCid && (
+                      <div className="flex items-start gap-2">
+                        <Link2 className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-xs text-muted-foreground">IPFS File CID</p>
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY ?? 'https://ipfs.io/ipfs'}/${model.latestVersion.fileCid}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-xs text-primary hover:underline break-all"
+                          >
+                            {model.latestVersion.fileCid}
+                          </a>
+                        </div>
+                      </div>
+                    )}
+                    {/* Owner Address */}
+                    {model.latestVersion.ownerAddress && (
+                      <div className="flex items-start gap-2">
+                        <User className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-xs text-muted-foreground">Owner Address</p>
+                          <p className="font-mono text-xs break-all">
+                            {model.latestVersion.ownerAddress}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {/* SHA256 */}
+                    {model.latestVersion.sha256 && (
+                      <div className="flex items-start gap-2">
+                        <Hash className="mt-0.5 h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                        <div className="min-w-0">
+                          <p className="text-xs text-muted-foreground">SHA-256</p>
+                          <p className="font-mono text-xs break-all text-muted-foreground">
+                            {model.latestVersion.sha256}
+                          </p>
+                        </div>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
@@ -233,11 +316,13 @@ export default function ModelDetailPage({ params }: ModelDetailPageProps) {
 
                   <Separator />
 
-                  {/* IPFS — placeholder for future milestone */}
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    <span>IPFS hash — available after model upload</span>
-                  </div>
+                  {/* Upload / NFT button */}
+                  <Button size="sm" className="w-full gap-1.5" asChild>
+                    <Link href={`/models/upload?modelId=${id}`}>
+                      <Upload className="h-3.5 w-3.5" />
+                      Upload New Version
+                    </Link>
+                  </Button>
                 </CardContent>
               </Card>
             </div>

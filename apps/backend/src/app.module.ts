@@ -6,6 +6,7 @@ import { HealthModule } from './modules/health/health.module';
 import { ModelsModule } from './modules/models/models.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { TagsModule } from './modules/tags/tags.module';
+import { UploadModule } from './modules/upload/upload.module';
 import { RequestIdMiddleware } from './modules/common/middleware/request-id.middleware';
 import { appConfig } from './modules/config/app.config';
 import { databaseConfig } from './modules/config/database.config';
@@ -30,6 +31,7 @@ import { redisConfig } from './modules/config/redis.config';
     ModelsModule,
     CategoriesModule,
     TagsModule,
+    UploadModule,
   ],
 })
 export class AppModule implements NestModule {

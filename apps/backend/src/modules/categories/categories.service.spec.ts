@@ -1,7 +1,5 @@
-import { Test, type TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import { PrismaService } from '../database/prisma.service';
 
 const mockPrisma = {
   category: {
@@ -26,12 +24,9 @@ function makeCategory(overrides: Record<string, unknown> = {}) {
 describe('CategoriesService', () => {
   let service: CategoriesService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [CategoriesService, { provide: PrismaService, useValue: mockPrisma }],
-    }).compile();
-
-    service = module.get<CategoriesService>(CategoriesService);
+  beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    service = new CategoriesService(mockPrisma as any);
     jest.clearAllMocks();
   });
 

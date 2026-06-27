@@ -1,7 +1,5 @@
-import { Test, type TestingModule } from '@nestjs/testing';
 import { NotFoundException, ConflictException } from '@nestjs/common';
 import { TagsService } from './tags.service';
-import { PrismaService } from '../database/prisma.service';
 
 const mockPrisma = {
   tag: {
@@ -25,12 +23,9 @@ function makeTag(overrides: Record<string, unknown> = {}) {
 describe('TagsService', () => {
   let service: TagsService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [TagsService, { provide: PrismaService, useValue: mockPrisma }],
-    }).compile();
-
-    service = module.get<TagsService>(TagsService);
+  beforeEach(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    service = new TagsService(mockPrisma as any);
     jest.clearAllMocks();
   });
 

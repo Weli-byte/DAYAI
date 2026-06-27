@@ -5,7 +5,8 @@ export const ROUTES = {
   MODELS: '/models',
   MODEL_DETAIL: (id: string) => `/models/${id}`,
   MODEL_CREATE: '/models/create',
-  UPLOAD: '/upload',
+  MODEL_UPLOAD: '/models/upload',
+  UPLOAD: '/models/upload',
   PROFILE: '/profile',
   SETTINGS: '/settings',
 } as const;

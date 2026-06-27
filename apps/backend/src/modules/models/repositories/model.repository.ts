@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { type Prisma } from '@prisma/client';
 import { type PrismaService } from '../../database/prisma.service';
 import type { QueryModelDto } from '../dto/query-model.dto';
+import type { Framework, ModelStatus } from '../../common/types/enums';
 
 // Shape of model data returned from every query (relations included)
 export interface ModelWithRelations {
@@ -81,7 +83,7 @@ export class ModelRepository {
         orderBy,
         skip,
         take: limit,
-      }) as Promise<ModelWithRelations[]>,
+      }) as Prisma.PrismaPromise<ModelWithRelations[]>,
       this.prisma.aIModel.count({ where }),
     ]);
 
@@ -105,11 +107,13 @@ export class ModelRepository {
     categoryId?: string;
     tagIds?: string[];
   }): Promise<ModelWithRelations> {
-    const { tagIds, ...rest } = data;
+    const { tagIds, framework, status, ...rest } = data;
 
     return (await this.prisma.aIModel.create({
       data: {
         ...rest,
+        ...(framework && { framework: framework as Framework }),
+        ...(status && { status: status as ModelStatus }),
         tags: tagIds?.length ? { create: tagIds.map((tagId) => ({ tagId })) } : undefined,
       },
       include: MODEL_INCLUDE,
@@ -124,16 +128,19 @@ export class ModelRepository {
       framework?: string;
       status?: string;
       license?: string;
-      categoryId?: string;
+      categoryId?: string | null;
       tagIds?: string[];
     },
   ): Promise<ModelWithRelations> {
-    const { tagIds, ...rest } = data;
+    const { tagIds, framework, status, categoryId, ...rest } = data;
 
     return (await this.prisma.aIModel.update({
       where: { id },
       data: {
         ...rest,
+        ...(framework !== undefined && { framework: framework as Framework }),
+        ...(status !== undefined && { status: status as ModelStatus }),
+        ...(categoryId !== undefined && { categoryId }),
         ...(tagIds !== undefined && {
           tags: {
             deleteMany: {},

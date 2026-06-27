@@ -1,7 +1,6 @@
-import { Test, type TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { ModelsService } from './models.service';
-import { ModelRepository } from './repositories/model.repository';
+import type { ModelRepository } from './repositories/model.repository';
 
 // ── Test factory ──────────────────────────────────────────────────────────────
 
@@ -39,20 +38,22 @@ describe('ModelsService', () => {
     create: jest.fn(),
     update: jest.fn(),
     softDelete: jest.fn(),
-  };
+  } as unknown as ModelRepository;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [ModelsService, { provide: ModelRepository, useValue: mockRepo }],
-    }).compile();
-
-    service = module.get<ModelsService>(ModelsService);
+  beforeEach(() => {
+    // Direct instantiation — no NestJS DI, avoids reflect-metadata issues in ts-jest
+    service = new ModelsService(mockRepo);
     jest.clearAllMocks();
   });
 
   describe('findAll', () => {
     it('returns paginated models', async () => {
-      mockRepo.findMany.mockResolvedValue({ data: [makeModel()], total: 1, page: 1, limit: 20 });
+      (mockRepo.findMany as jest.Mock).mockResolvedValue({
+        data: [makeModel()],
+        total: 1,
+        page: 1,
+        limit: 20,
+      });
 
       const result = await service.findAll({});
 
@@ -62,7 +63,12 @@ describe('ModelsService', () => {
     });
 
     it('calculates totalPages correctly', async () => {
-      mockRepo.findMany.mockResolvedValue({ data: [], total: 45, page: 1, limit: 20 });
+      (mockRepo.findMany as jest.Mock).mockResolvedValue({
+        data: [],
+        total: 45,
+        page: 1,
+        limit: 20,
+      });
 
       const result = await service.findAll({ limit: 20 });
 
@@ -72,7 +78,7 @@ describe('ModelsService', () => {
 
   describe('findOne', () => {
     it('returns a model DTO when found', async () => {
-      mockRepo.findById.mockResolvedValue(makeModel());
+      (mockRepo.findById as jest.Mock).mockResolvedValue(makeModel());
 
       const result = await service.findOne('model_1');
 
@@ -81,7 +87,7 @@ describe('ModelsService', () => {
     });
 
     it('throws NotFoundException when not found', async () => {
-      mockRepo.findById.mockResolvedValue(null);
+      (mockRepo.findById as jest.Mock).mockResolvedValue(null);
 
       await expect(service.findOne('unknown')).rejects.toThrow(NotFoundException);
     });
@@ -89,7 +95,7 @@ describe('ModelsService', () => {
 
   describe('create', () => {
     it('creates a model and returns DTO', async () => {
-      mockRepo.create.mockResolvedValue(makeModel());
+      (mockRepo.create as jest.Mock).mockResolvedValue(makeModel());
 
       const result = await service.create({ title: 'Test Model', ownerId: 'user_1' });
 
@@ -100,8 +106,8 @@ describe('ModelsService', () => {
 
   describe('update', () => {
     it('updates a model and returns DTO', async () => {
-      mockRepo.findById.mockResolvedValue(makeModel());
-      mockRepo.update.mockResolvedValue(makeModel({ title: 'Updated Model' }));
+      (mockRepo.findById as jest.Mock).mockResolvedValue(makeModel());
+      (mockRepo.update as jest.Mock).mockResolvedValue(makeModel({ title: 'Updated Model' }));
 
       const result = await service.update('model_1', { title: 'Updated Model' });
 
@@ -109,7 +115,7 @@ describe('ModelsService', () => {
     });
 
     it('throws NotFoundException when model does not exist', async () => {
-      mockRepo.findById.mockResolvedValue(null);
+      (mockRepo.findById as jest.Mock).mockResolvedValue(null);
 
       await expect(service.update('missing', {})).rejects.toThrow(NotFoundException);
     });
@@ -117,15 +123,15 @@ describe('ModelsService', () => {
 
   describe('remove', () => {
     it('soft-deletes a model', async () => {
-      mockRepo.findById.mockResolvedValue(makeModel());
-      mockRepo.softDelete.mockResolvedValue(undefined);
+      (mockRepo.findById as jest.Mock).mockResolvedValue(makeModel());
+      (mockRepo.softDelete as jest.Mock).mockResolvedValue(undefined);
 
       await expect(service.remove('model_1')).resolves.toBeUndefined();
       expect(mockRepo.softDelete).toHaveBeenCalledWith('model_1');
     });
 
     it('throws NotFoundException when model does not exist', async () => {
-      mockRepo.findById.mockResolvedValue(null);
+      (mockRepo.findById as jest.Mock).mockResolvedValue(null);
 
       await expect(service.remove('missing')).rejects.toThrow(NotFoundException);
     });

@@ -89,7 +89,28 @@ async function main(): Promise<void> {
   //
   // ─────────────────────────────────────────────────────────────────────────
 
-  console.log('\n⚠️  No contracts deployed yet — placeholder script (Sprint 5 will add contracts)');
+  // ── Step 1: Deploy AIModelNFT ─────────────────────────────────────────────
+  console.log('\n📦 Deploying AIModelNFT...');
+  const AIModelNFT = await ethers.getContractFactory('AIModelNFT');
+  const aiModelNFT = await AIModelNFT.connect(deployer).deploy();
+  await aiModelNFT.waitForDeployment();
+  const aiModelNFTAddress = await aiModelNFT.getAddress();
+  const deployTx = aiModelNFT.deploymentTransaction();
+  if (!deployTx) throw new Error('Deploy transaction not found');
+
+  if (network.name !== 'hardhat' && network.name !== 'localhost') {
+    const { waitForConfirmations } = await import('./helpers');
+    await waitForConfirmations(deployTx.hash);
+  }
+
+  record.contracts['AIModelNFT'] = {
+    name: 'AIModelNFT',
+    address: aiModelNFTAddress,
+    txHash: deployTx.hash,
+    blockNumber: await ethers.provider.getBlockNumber(),
+    isProxy: false,
+  };
+  console.log(`✅ AIModelNFT → ${aiModelNFTAddress}`);
 
   // ── Save deployment record ────────────────────────────────────────────────
   writeDeployment(record);

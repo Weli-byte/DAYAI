@@ -124,20 +124,62 @@ model AIModel {
 
 /// Immutable version snapshot of an AI Model
 model ModelVersion {
-  id        String   @id @default(cuid())
-  modelId   String
-  version   String   @db.VarChar(20)
-  changelog String?  @db.Text
-  ipfsHash  String?  @db.VarChar(100)
-  isLatest  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  modelId     String
+  version     String   @db.VarChar(20)
+  changelog   String?  @db.Text
+  // IPFS
+  fileCid     String?  @db.VarChar(200)
+  metadataCid String?  @db.VarChar(200)
+  // Legacy alias kept for backward compat
+  ipfsHash    String?  @db.VarChar(200)
+  // File info
+  fileSize    BigInt?
+  sha256      String?  @db.VarChar(64)
+  // Blockchain
+  nftTokenId  String?  @db.VarChar(78)
+  txHash      String?  @db.VarChar(66)
+  // Owner wallet at time of mint
+  ownerAddress String? @db.VarChar(42)
+  isLatest    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   model AIModel @relation(fields: [modelId], references: [id], onDelete: Cascade)
 
   @@unique([modelId, version])
   @@index([modelId])
+  @@index([nftTokenId])
   @@map("model_versions")
+}
+
+/// Upload job tracking — short-lived, cleaned up after 7 days
+model UploadJob {
+  id          String   @id @default(cuid())
+  modelId     String?
+  versionId   String?
+  status      UploadJobStatus @default(PENDING)
+  stage       String?  @db.VarChar(50)
+  fileCid     String?  @db.VarChar(200)
+  metadataCid String?  @db.VarChar(200)
+  nftTokenId  String?  @db.VarChar(78)
+  txHash      String?  @db.VarChar(66)
+  errorMessage String? @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([modelId])
+  @@index([status])
+  @@map("upload_jobs")
+}
+
+enum UploadJobStatus {
+  PENDING
+  UPLOADING_FILE
+  UPLOADING_METADATA
+  MINTING
+  COMPLETED
+  FAILED
 }
 
 /// Many-to-many join table: AIModel ↔ Tag

@@ -1,7 +1,12 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { modelsService, categoriesService, tagsService } from '@/services/models.service';
+import {
+  modelsService,
+  categoriesService,
+  tagsService,
+  uploadService,
+} from '@/services/models.service';
 import type { ModelQueryParams, CreateModelPayload, UpdateModelPayload } from '@/types/model';
 
 // ── Query keys ────────────────────────────────────────────────────────────────
@@ -77,5 +82,29 @@ export function useTags() {
     queryKey: modelKeys.tags,
     queryFn: () => tagsService.list(),
     staleTime: 5 * 60_000,
+  });
+}
+
+// ── Upload + Mint ─────────────────────────────────────────────────────────────
+export function useUploadModel() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (formData: FormData) => uploadService.uploadModel(formData),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: modelKeys.all });
+    },
+  });
+}
+
+export function useUploadJobStatus(jobId: string | null) {
+  return useQuery({
+    queryKey: ['upload-job', jobId],
+    queryFn: () => uploadService.getJobStatus(jobId!),
+    enabled: Boolean(jobId),
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      if (status === 'COMPLETED' || status === 'FAILED') return false;
+      return 2000;
+    },
   });
 }

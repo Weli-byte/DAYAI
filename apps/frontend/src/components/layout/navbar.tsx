@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useSidebarStore } from '@/store/sidebar-store';
+import { ConnectWalletButton } from '@/components/wallet/connect-wallet-button';
 import { ROUTES } from '@/constants/routes';
 
 // ── Theme Toggle ──────────────────────────────────────────────────────────────
@@ -77,17 +78,9 @@ export function Navbar() {
       <div className="flex items-center gap-1">
         <ThemeToggle />
 
-        {/* Wallet connect — wired in a future milestone */}
-        <Button
-          size="sm"
-          variant="outline"
-          className="ml-2 gap-2 text-xs"
-          disabled
-          title="Wallet integration coming in a future milestone"
-        >
-          <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-          Connect Wallet
-        </Button>
+        <div className="ml-2">
+          <ConnectWalletButton />
+        </div>
       </div>
     </header>
   );

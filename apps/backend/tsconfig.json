@@ -21,9 +21,10 @@
     "esModuleInterop": true,
     "paths": {
       "@/modules/*": ["src/modules/*"],
-      "@/common/*": ["src/modules/common/*"]
+      "@/common/*": ["src/modules/common/*"],
+      "@prisma/client": ["./node_modules/.prisma/client"]
     }
   },
-  "include": ["src/**/*", "prisma/**/*", "test/**/*"],
+  "include": ["src/**/*", "prisma/**/*", "test/**/*", "src/shared/**/*"],
   "exclude": ["node_modules", "dist"]
 }

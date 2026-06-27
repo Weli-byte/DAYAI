@@ -29,6 +29,14 @@ export interface ModelVersionDto {
   changelog?: string | null;
   isLatest: boolean;
   createdAt: string;
+  // Blockchain & IPFS fields (added in Sprint 2 Milestone 2)
+  fileCid?: string | null;
+  metadataCid?: string | null;
+  nftTokenId?: string | null;
+  txHash?: string | null;
+  ownerAddress?: string | null;
+  fileSize?: number | null;
+  sha256?: string | null;
 }
 
 export interface ModelDto {
@@ -73,6 +81,42 @@ export interface UpdateModelPayload {
   license?: string;
   categoryId?: string;
   tagIds?: string[];
+}
+
+// ── Upload types ─────────────────────────────────────────────────────────────
+
+export type UploadJobStatus =
+  | 'PENDING'
+  | 'UPLOADING_FILE'
+  | 'UPLOADING_METADATA'
+  | 'MINTING'
+  | 'COMPLETED'
+  | 'FAILED';
+
+export interface UploadJobDto {
+  jobId: string;
+  status: UploadJobStatus;
+  stage?: string | null;
+  fileCid?: string | null;
+  metadataCid?: string | null;
+  nftTokenId?: string | null;
+  txHash?: string | null;
+  errorMessage?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MintResultDto {
+  jobId: string;
+  modelId: string;
+  versionId: string;
+  fileCid: string;
+  metadataCid: string;
+  metadataUri: string;
+  nftTokenId: string;
+  txHash: string;
+  sha256: string;
+  fileSize: number;
 }
 
 export interface ModelQueryParams {

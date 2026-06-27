@@ -4,7 +4,7 @@
  *
  * Run: pnpm prisma:seed
  */
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../node_modules/.prisma/client';
 import { Framework, ModelStatus } from '../src/modules/common/types/enums';
 
 const prisma = new PrismaClient();
